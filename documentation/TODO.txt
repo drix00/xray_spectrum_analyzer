@@ -1,0 +1,10 @@
+! GUI
+- Menu
+- Toolbar
+- Statusbar
+
+- Open EMSA file
+- Display spectrum.
+
+- Save spectrum in database.
+
