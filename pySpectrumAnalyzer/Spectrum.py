@@ -20,8 +20,8 @@ import os.path
 import pylab
 
 # Local modules.
-import SpectrumFileFormatTools.emmff.emsaFormat as emsaFormat
-import DuaneHuntLimit.myklebust1990 as DuaneHuntLimit
+import pySpectrumFileFormat.emmff.emsaFormat as emsaFormat
+import pyDuaneHuntLimit.myklebust1990 as DuaneHuntLimit
 
 # Globals and constants variables.
 
@@ -70,5 +70,5 @@ def run():
     spectrum.computeDuaneHuntLimit()
 
 if __name__ == '__main__': #pragma: no cover
-    import DrixUtilities.Runner as Runner
+    import pyHendrixDemersTools.Runner as Runner
     Runner.Runner().run(runFunction=run)

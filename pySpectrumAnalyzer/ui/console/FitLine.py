@@ -19,7 +19,7 @@ __license__ = ""
 import numpy as np
 
 # Local modules.
-from pyFitTools.fit.fitTools import _FitObject
+from pyFitTools.fitTools import _FitObject
 
 # Project modules
 
@@ -108,5 +108,5 @@ class FitLineKa1Ka2(_FitObject):
 
 
 if __name__ == '__main__': #pragma: no cover
-    import DrixUtilities.Runner as Runner
+    import pyHendrixDemersTools.Runner as Runner
     Runner.Runner().run(runFunction=None)

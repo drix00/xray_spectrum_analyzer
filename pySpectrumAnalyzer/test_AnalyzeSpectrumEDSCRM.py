@@ -38,5 +38,5 @@ class TestAnalyzeSpectrumEDSCRM(unittest.TestCase):
 
 if __name__ == '__main__': #pragma: no cover
         logging.getLogger().setLevel(logging.DEBUG)
-        from DrixUtilities.Testings import runTestModule
+        from pyHendrixDemersTools.Testings import runTestModule
         runTestModule()

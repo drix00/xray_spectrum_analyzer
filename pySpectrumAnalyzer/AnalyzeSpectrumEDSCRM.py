@@ -20,7 +20,7 @@ import logging
 # Third party modules.
 
 # Local modules.
-import DrixUtilities.Files as Files
+import pyHendrixDemersTools.Files as Files
 
 import ComputePeaksIntensities
 
@@ -383,5 +383,5 @@ def runAll():
 
 
 if __name__ == '__main__': #pragma: no cover
-    import DrixUtilities.Runner as Runner
+    import pyHendrixDemersTools.Runner as Runner
     Runner.Runner().run(runFunction=runAll)

@@ -20,7 +20,7 @@ import logging
 # Third party modules.
 
 # Local modules.
-import SpectrumAnalyzer.ui.gui.Tk.Options as Options
+import pySpectrumAnalyzer.ui.gui.Tk.Options as Options
 
 # Globals and constants variables.
 
@@ -46,5 +46,5 @@ class TestOptions(unittest.TestCase):
 
 if __name__ == '__main__': #pragma: no cover
     logging.getLogger().setLevel(logging.DEBUG)
-    from DrixUtilities.Testings import runTestModule
+    from pyHendrixDemersTools.Testings import runTestModule
     runTestModule()

@@ -30,15 +30,15 @@ from scipy.optimize import leastsq
 from lmfit import minimize, Parameters
 
 # Local modules.
-import SpectrumFileFormatTools.emmff.emsa as emsa
-import SpectrumFileFormatTools.emmff.emsaFormat as emsaFormat
-import SpectrumFileFormatTools.Bruker.ExportedCsvFile as ExportedCsvFile
+import pySpectrumFileFormat.emmff.emsa as emsa
+import pySpectrumFileFormat.emmff.emsaFormat as emsaFormat
+import pySpectrumFileFormat.Bruker.ExportedCsvFile as ExportedCsvFile
 
-import DrixUtilities.Files as Files
-import DrixUtilities.Graphics as Graphics
-from pyFitTools.fit.fitTools import FitFunctions, calculateR2
-from pyFitTools.fit.FitPolynomialFunction import FitPolynomialFirstDegreeFunction, PolynomialFirstDegreeFunction
-from pyFitTools.fit.FitGaussianFunction import FitGaussianFunction, GaussianFunction
+import pyHendrixDemersTools.Files as Files
+import pyHendrixDemersTools.Graphics as Graphics
+from pyFitTools.fitTools import FitFunctions, calculateR2
+from pyFitTools.FitPolynomialFunction import FitPolynomialFirstDegreeFunction, PolynomialFirstDegreeFunction
+from pyFitTools.FitGaussianFunction import FitGaussianFunction, GaussianFunction
 
 # Project modules
 import XrayLineReferenceManager
@@ -1023,5 +1023,5 @@ def run():
     spectrumAnalyzer.showGraphic()
 
 if __name__ == '__main__': #pragma: no cover
-    import DrixUtilities.Runner as Runner
+    import pyHendrixDemersTools.Runner as Runner
     Runner.Runner().run(runFunction=run)

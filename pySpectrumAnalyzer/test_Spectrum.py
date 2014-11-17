@@ -21,7 +21,7 @@ import logging
 
 # Local modules.
 import Spectrum
-import DrixUtilities.Files as Files
+import pyHendrixDemersTools.Files as Files
 
 # Globals and constants variables.
 
@@ -53,5 +53,5 @@ class TestSpectrum(unittest.TestCase):
 
 if __name__ == '__main__': #pragma: no cover
     logging.getLogger().setLevel(logging.DEBUG)
-    from DrixUtilities.Testings import runTestModule
+    from pyHendrixDemersTools.Testings import runTestModule
     runTestModule()

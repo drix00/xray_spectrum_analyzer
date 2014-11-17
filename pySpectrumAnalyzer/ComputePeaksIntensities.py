@@ -25,9 +25,9 @@ import numpy
 from scipy.optimize import leastsq
 
 # Local modules.
-import SpectrumFileFormatTools.emmff.emsaFormat as emsaFormat
+import pySpectrumFileFormat.emmff.emsaFormat as emsaFormat
 
-import DrixUtilities.Colors as Colors
+import pyHendrixDemersTools.Colors as Colors
 
 # Globals and constants variables.
 def gaussianFitFunction(a, x):
@@ -329,5 +329,5 @@ class ComputePeaksIntensities(object):
             writer.writerow(row)
 
 if __name__ == '__main__': #pragma: no cover
-    import DrixUtilities.Runner as Runner
+    import pyHendrixDemersTools.Runner as Runner
     Runner.Runner().run(runFunction=None)

@@ -24,7 +24,7 @@ from scipy.optimize import leastsq
 import numpy
 
 # Local modules.
-import SpectrumFileFormatTools.emmff.emsaFormat as emsaFormat
+import pySpectrumFileFormat.emmff.emsaFormat as emsaFormat
 
 # Globals and constants variables.
 def gaussianFitFunction(a, x):
@@ -494,5 +494,5 @@ def run():
         computeIntensitiesZrKPeaks.displaySomething()
 
 if __name__ == '__main__': #pragma: no cover
-    import DrixUtilities.Runner as Runner
+    import pyHendrixDemersTools.Runner as Runner
     Runner.Runner().run(runFunction=run)

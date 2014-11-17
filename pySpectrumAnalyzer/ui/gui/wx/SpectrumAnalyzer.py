@@ -31,7 +31,7 @@ from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as FigureCanvas
 # Local modules.
 #from wxtools.messagedialog import show_exception_dialog
 #from wxtools.filedialog import FileDialog
-import SpectrumFileFormatTools.emmff.emsa as emsa
+import pySpectrumFileFormat.emmff.emsa as emsa
 
 # Project modules
 from ui.gui.wx import SpectrumViewer
@@ -326,5 +326,5 @@ def run():
     app.MainLoop()
 
 if __name__ == '__main__': #pragma: no cover
-    import DrixUtilities.Runner as Runner
+    import pyHendrixDemersTools.Runner as Runner
     Runner.Runner().run(runFunction=run)

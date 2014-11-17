@@ -21,11 +21,11 @@ import pylab
 import numpy as np
 
 # Local modules.
-import DrixUtilities.Files as Files
-import DrixUtilities.Graphics as Graphics
+import pyHendrixDemersTools.Files as Files
+import pyHendrixDemersTools.Graphics as Graphics
 import DatabasesTools.DTSA.XRayTransitionData as XRayTransitionData
 
-import SpectrumFileFormatTools.Edax.TemCsvFile as TemCsvFile
+import pySpectrumFileFormat.Edax.TemCsvFile as TemCsvFile
 
 # Globals and constants variables.
 ENERGIES_eV = "Energies_eV"
@@ -217,5 +217,5 @@ def run():
         pylab.show()
 
 if __name__ == '__main__':    #pragma: no cover
-    import DrixUtilities.Runner as Runner
+    import pyHendrixDemersTools.Runner as Runner
     Runner.Runner().run(runFunction=run)

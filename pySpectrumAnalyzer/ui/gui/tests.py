@@ -18,7 +18,7 @@ __license__ = ""
 # Third party modules.
 
 # Local modules.
-import DrixUtilities.Testings as Testings
+import pyHendrixDemersTools.Testings as Testings
 
 # Project modules
 
