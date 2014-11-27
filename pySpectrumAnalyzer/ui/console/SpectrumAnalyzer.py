@@ -565,7 +565,7 @@ class SpectrumAnalyzer(object):
         for omittedLine in omittedLines:
             try:
                 lines.remove(omittedLine)
-            except ValueError, message:
+            except ValueError as message:
                 logging.info(omittedLine)
                 logging.warning(message)
 

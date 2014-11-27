@@ -16,11 +16,13 @@ __svnId__ = "$Id: test_Spectrum.py 2378 2011-06-20 19:45:48Z hdemers $"
 # Standard library modules.
 import unittest
 import logging
+import os.path
 
 # Third party modules.
+from nose import SkipTest
 
 # Local modules.
-import Spectrum
+import pySpectrumAnalyzer.Spectrum as Spectrum
 import pyHendrixDemersTools.Files as Files
 
 # Globals and constants variables.
@@ -33,6 +35,8 @@ class TestSpectrum(unittest.TestCase):
         self.spectrum = Spectrum.Spectrum()
 
         self.filename = Files.getCurrentModulePath(__file__, "inputData/Spectrum 2.txt")
+        if not os.path.isfile(self.filename):
+            raise SkipTest
 
     def tearDown(self):
         unittest.TestCase.tearDown(self)

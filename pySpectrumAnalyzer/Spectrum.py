@@ -45,7 +45,7 @@ class Spectrum(object):
 
         self.duaneHuntLimit = manager.getDuaneHuntLimit()
 
-        print self.duaneHuntLimit
+        print(self.duaneHuntLimit)
 
     def show(self, plotCommand=pylab.plot):
         if self.emsa:

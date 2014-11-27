@@ -20,7 +20,7 @@ import logging
 # Third party modules.
 
 # Local modules.
-import SpectrumAnalyzerData
+import pySpectrumAnalyzer.SpectrumAnalyzerData as SpectrumAnalyzerData
 
 # Globals and constants variables.
 

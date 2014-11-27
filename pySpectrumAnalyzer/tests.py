@@ -18,10 +18,12 @@ __svnId__ = "$Id: tests.py 2183 2011-01-31 21:11:43Z hdemers $"
 # Third party modules.
 
 # Local modules.
-import pyHendrixDemersTools.Testings as Testings
 
 # Globals and constants variables.
 
 if __name__ == "__main__":
-    # todo: Correct import errors to be able to use --cover-inclusive option.
-    Testings.runTestSuiteWithoutCoverage()
+    import nose
+    import sys
+    argv = sys.argv
+    argv.append("--cover-package=pySpectrumAnalyzer")
+    nose.main(argv=argv)

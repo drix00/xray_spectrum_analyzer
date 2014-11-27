@@ -19,7 +19,7 @@ __license__ = ""
 
 # Local modules.
 import DatabasesTools.DTSA.XRayTransitionData as XRayTransitionData
-import DatabasesTools.ElementProperties as ElementProperties
+import pySpecimenTools.ElementProperties as ElementProperties
 
 # Project modules
 

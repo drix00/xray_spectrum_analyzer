@@ -14,13 +14,18 @@ __svnDate__ = "$Date: 2014-09-01 10:20:37 -0400 (Mon, 01 Sep 2014) $"
 __svnId__ = "$Id: MainWindow.py 2937 2014-09-01 14:20:37Z hdemers $"
 
 # Standard library modules.
-import Tkinter as Tk
+try:
+    import tkinter as Tk
+except ImportError:
+    import Tkinter as Tk
+
 import logging
 import os.path
 
 # Third party modules.
-import ImageTk
-import Image
+from PIL import Image
+from PIL import ImageTk
+
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
 from matplotlib.figure import Figure
 

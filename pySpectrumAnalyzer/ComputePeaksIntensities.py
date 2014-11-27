@@ -297,7 +297,7 @@ class ComputePeaksIntensities(object):
 
         # Header
         args = ("#Energy", "Line", "Intensity")
-        print "%s\t%s\t%s" % args
+        print("%s\t%s\t%s" % args)
 
         for label in self._peaks:
             energy_keV = self._peaks[label].getPosition_keV()
@@ -305,7 +305,7 @@ class ComputePeaksIntensities(object):
             intensity = self._peaks[label].getIntensity()
 
             args = (energy_keV, label, intensity)
-            print "%0.3f\t%6s\t%i" % args
+            print("%0.3f\t%6s\t%i" % args)
 
     def saveRestults(self):
         filepath, dummy_extention = os.path.splitext(self._sprectrumFilepath)

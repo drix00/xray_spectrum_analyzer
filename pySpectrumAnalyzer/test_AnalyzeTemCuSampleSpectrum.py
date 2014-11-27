@@ -20,7 +20,7 @@ import logging
 # Third party modules.
 
 # Local modules.
-import AnalyzeTemCuSampleSpectrum
+import pySpectrumAnalyzer.AnalyzeTemCuSampleSpectrum as AnalyzeTemCuSampleSpectrum
 
 # Globals and constants variables.
 

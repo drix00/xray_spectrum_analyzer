@@ -20,7 +20,7 @@ import logging
 # Third party modules.
 
 # Local modules.
-import AnalyzeSpectrumEDSCRM
+import pySpectrumAnalyzer.AnalyzeSpectrumEDSCRM as AnalyzeSpectrumEDSCRM
 
 # Globals and constants variables.
 

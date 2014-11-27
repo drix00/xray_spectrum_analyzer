@@ -20,7 +20,7 @@ import logging
 # Third party modules.
 
 # Local modules.
-import ComputePeaksIntensities
+import pySpectrumAnalyzer.ComputePeaksIntensities as ComputePeaksIntensities
 
 # Globals and constants variables.
 

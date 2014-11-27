@@ -22,7 +22,7 @@ import logging
 # Local modules.
 import pyHendrixDemersTools.Files as Files
 
-import ComputePeaksIntensities
+import pySpectrumAnalyzer.ComputePeaksIntensities as ComputePeaksIntensities
 
 # Globals and constants variables.
 CKA = "C Ka"

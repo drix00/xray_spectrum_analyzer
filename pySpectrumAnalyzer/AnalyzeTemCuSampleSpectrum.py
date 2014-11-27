@@ -187,7 +187,7 @@ class AnalyzeTemCuSampleSpectrum(object):
             step_eV = 10.0 / 2
             mask = np.all([energies_eV > mainLineEnergy_eV - step_eV, energies_eV < mainLineEnergy_eV + step_eV], axis=0)
             mainLineCount = sum(counts[mask])
-            print mainLineEnergy_eV, mainLineFraction, mainLineCount
+            print(mainLineEnergy_eV, mainLineFraction, mainLineCount)
             for transition in transitionInfo:
                     energy_eV, fraction = transitionInfo[transition]
                     ymax = pylab.ylim()[1]

@@ -458,9 +458,9 @@ def run():
 
         intZrKb = computeIntensitiesZrKPeaks.getZrKbIntensity()[0]
 
-        print "Ka: ", intZrKa
+        print("Ka: ", intZrKa)
 
-        print "Kb: ", intZrKb
+        print("Kb: ", intZrKb)
 
         #intensity = float(computeIntensitiesZrKPeaks.getCuKaIntensity()[0])
         #intensity += float(computeIntensitiesZrKPeaks.getCuKbIntensity()[0])
@@ -474,13 +474,13 @@ def run():
         intMnK = float(computeIntensitiesZrKPeaks.getMnKaIntensity()[0])
         intMnK += float(computeIntensitiesZrKPeaks.getMnKbIntensity()[0])
 
-        print "Mn K: %0.1f" % (intMnK)
+        print("Mn K: %0.1f" % (intMnK))
 
         ratioZrKa = 0.80*(intZrKa/intMnK)*28.294
 
         ratioZrKb = 0.80*(intZrKb/intMnK)*147.199
 
-        print "%0.3f %0.3f" % (ratioZrKa, ratioZrKb)
+        print("%0.3f %0.3f" % (ratioZrKa, ratioZrKb))
 
         intMnK = 721911.8
 
@@ -488,7 +488,7 @@ def run():
 
         ratioZrKb = 0.80*(intZrKb/intMnK)*147.199
 
-        print "%0.3f %0.3f" % (ratioZrKa, ratioZrKb)
+        print("%0.3f %0.3f" % (ratioZrKa, ratioZrKb))
         #computeIntensitiesZrKPeaks.displaySpectum()
 
         computeIntensitiesZrKPeaks.displaySomething()

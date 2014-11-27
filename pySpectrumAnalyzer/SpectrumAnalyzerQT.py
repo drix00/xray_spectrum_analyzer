@@ -76,7 +76,7 @@ class ImageDialog(QtGui.QWidget, Ui_Form):
                 self.energyList.append(float(energy))
                 self.intensityList.append(float(intensity))
 
-        print len(self.energyList), len(self.intensityList)
+        print(len(self.energyList), len(self.intensityList))
 
     def showData(self, energy, intensity):
         self.qwtPlot_viewer.curve1.setData(energy, intensity)

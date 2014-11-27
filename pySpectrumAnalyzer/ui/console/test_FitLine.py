@@ -22,7 +22,7 @@ import logging
 # Local modules.
 
 # Project modules
-import FitLine
+import pySpectrumAnalyzer.ui.console.FitLine as FitLine
 
 # Globals and constants variables.
 

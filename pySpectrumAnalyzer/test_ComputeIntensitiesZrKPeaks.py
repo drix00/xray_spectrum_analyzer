@@ -20,7 +20,7 @@ import logging
 # Third party modules.
 
 # Local modules.
-import ComputeIntensitiesZrKPeaks
+import pySpectrumAnalyzer.ComputeIntensitiesZrKPeaks as ComputeIntensitiesZrKPeaks
 
 # Globals and constants variables.
 

@@ -18,27 +18,27 @@ __svnId__ = "$Id: SpectrumAnalyzerGUI.py 2937 2014-09-01 14:20:37Z hdemers $"
 # Third party modules.
 
 # Local modules.
-import ui.gui.Tk.Options
-import ui.gui.Tk.MainWindow
-import SpectrumAnalyzerData
-import SpectrumAnalyzerEngine
+import pySpectrumAnalyzer.ui.gui.Tk.Options
+import pySpectrumAnalyzer.ui.gui.Tk.MainWindow
+import pySpectrumAnalyzer.SpectrumAnalyzerData as SpectrumAnalyzerData
+import pySpectrumAnalyzer.SpectrumAnalyzerEngine as SpectrumAnalyzerEngine
 
 # Globals and constants variables.
 
 class SpectrumAnalyzerGUI(object):
     def __init__(self, args=None, configurationFile=None):
-        self._options = ui.gui.Tk.Options.Options(args, configurationFile)
+        self._options = pySpectrumAnalyzer.ui.gui.Tk.Options.Options(args, configurationFile)
 
         self._data = SpectrumAnalyzerData.SpectrumAnalyzerData()
 
         self._engine = SpectrumAnalyzerEngine.SpectrumAnalyzerEngine()
 
     def run(self):
-        if self._options.getUI() == ui.gui.Tk.Options.UI_TK:
+        if self._options.getUI() == pySpectrumAnalyzer.ui.gui.Tk.Options.UI_TK:
             self._runTk()
 
     def _runTk(self):
-        ui.gui.Tk.MainWindow.run(self._options, self._data, self._engine)
+        pySpectrumAnalyzer.ui.gui.Tk.MainWindow.run(self._options, self._data, self._engine)
 
 # TODO: Read command line options.
 # TODO: Read configuration files options.
