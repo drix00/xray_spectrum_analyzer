@@ -50,7 +50,7 @@ class MainWindow(Tk.Frame):
         else:
             maxsize = self.maxsize()
 
-        self._minsize = (maxsize[0]/4, maxsize[1]/4)
+        self._minsize = (int(maxsize[0]/4), int(maxsize[1]/4))
 
         self.winfo_toplevel().minsize(self._minsize[0], self._minsize[1])
 

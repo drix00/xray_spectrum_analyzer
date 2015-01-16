@@ -41,7 +41,7 @@ from pyFitTools.FitPolynomialFunction import FitPolynomialFirstDegreeFunction, P
 from pyFitTools.FitGaussianFunction import FitGaussianFunction, GaussianFunction
 
 # Project modules
-import XrayLineReferenceManager
+import pySpectrumAnalyzer.ui.console.XrayLineReferenceManager as XrayLineReferenceManager
 
 # Globals and constants variables.
 DEBUG = False

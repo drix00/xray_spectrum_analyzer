@@ -20,8 +20,8 @@ __svnId__ = "$Id: SpectrumAnalyzerGUI.py 2937 2014-09-01 14:20:37Z hdemers $"
 # Local modules.
 import pySpectrumAnalyzer.ui.gui.Tk.Options
 import pySpectrumAnalyzer.ui.gui.Tk.MainWindow
-import pySpectrumAnalyzer.SpectrumAnalyzerData as SpectrumAnalyzerData
-import pySpectrumAnalyzer.SpectrumAnalyzerEngine as SpectrumAnalyzerEngine
+import pySpectrumAnalyzer.ui.gui.Tk.SpectrumAnalyzerData as SpectrumAnalyzerData
+import pySpectrumAnalyzer.ui.gui.Tk.SpectrumAnalyzerEngine as SpectrumAnalyzerEngine
 
 # Globals and constants variables.
 

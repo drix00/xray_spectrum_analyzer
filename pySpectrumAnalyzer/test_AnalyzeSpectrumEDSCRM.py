@@ -37,6 +37,8 @@ class TestAnalyzeSpectrumEDSCRM(unittest.TestCase):
                 self.assert_(True)
 
 if __name__ == '__main__': #pragma: no cover
-        logging.getLogger().setLevel(logging.DEBUG)
-        from pyHendrixDemersTools.Testings import runTestModule
-        runTestModule()
+    import nose
+    import sys
+    argv = sys.argv
+    argv.append("--cover-package=pySpectrumAnalyzer.AnalyzeSpectrumEDSCRM")
+    nose.runmodule(argv=argv)

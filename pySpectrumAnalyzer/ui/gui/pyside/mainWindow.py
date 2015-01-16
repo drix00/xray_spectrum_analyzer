@@ -26,14 +26,21 @@ from PySide import QtGui
 # Project modules
 
 # Globals and constants variables.
+# create logger
+module_logger = logging.getLogger('pySpectrumAnalyzer')
 
 class MainWindow(QtGui.QWidget):
     def __init__(self):
+        self.logger = logging.getLogger('pySpectrumAnalyzer.MainWindow')
+        self.logger.info("MainWindow.__init__")
+
         super(MainWindow, self).__init__()
 
         self.initUI()
 
     def initUI(self):
+        self.logger.info("MainWindow.initUI")
+
         QtGui.QToolTip.setFont(QtGui.QFont('SansSerif', 10))
 
         self.setToolTip('This is a <b>QWidget</b> widget')
@@ -42,7 +49,6 @@ class MainWindow(QtGui.QWidget):
         btn.setToolTip('This is a <b>QPushButton</b> widget')
         btn.resize(btn.sizeHint())
         btn.move(50, 50)
-
 
         qbtn = QtGui.QPushButton('Quit', self)
         qbtn.setToolTip('Close the application')
@@ -58,6 +64,7 @@ class MainWindow(QtGui.QWidget):
         self.show()
 
     def center(self):
+        self.logger.info("MainWindow.center")
 
         qr = self.frameGeometry()
         cp = QtGui.QDesktopWidget().availableGeometry().center()
@@ -65,6 +72,7 @@ class MainWindow(QtGui.QWidget):
         self.move(qr.topLeft())
 
     def closeEvent(self, event):
+        self.logger.info("MainWindow.closeEvent")
 
         reply = QtGui.QMessageBox.question(self, 'Message', "Are you sure to quit?",
                                            QtGui.QMessageBox.Yes | QtGui.QMessageBox.No, QtGui.QMessageBox.No)
@@ -75,6 +83,15 @@ class MainWindow(QtGui.QWidget):
             event.ignore()
 
 def run():
+    LOG_FILENAME = 'pySpectrumAnalyzer.log'
+    #fh = logging.FileHandler(LOG_FILENAME)
+    fh = logging.handlers.RotatingFileHandler(LOG_FILENAME, maxBytes=1024*30, backupCount=10)
+    fh.setLevel(logging.DEBUG)
+    # create formatter and add it to the handlers
+    formatter = logging.Formatter('%(asctime)s : %(name)s : %(levelname)s : %(message)s')
+    fh.setFormatter(formatter)
+    module_logger.addHandler(fh)
+
     # Create a Qt application.
     app = QtGui.QApplication(sys.argv)
 

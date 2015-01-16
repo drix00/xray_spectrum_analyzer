@@ -18,11 +18,14 @@ __license__ = ""
 # Third party modules.
 
 # Local modules.
-import pyHendrixDemersTools.Testings as Testings
 
 # Project modules
 
 # Globals and constants variables.
 
 if __name__ == "__main__": #pragma: no cover
-    Testings.runTestSuiteWithCoverage(packageName=__file__)
+    import nose
+    import sys
+    argv = sys.argv
+    argv.append("--cover-package=pySpectrumAnalyzer.ui.gui.wx")
+    nose.main(argv=argv)
