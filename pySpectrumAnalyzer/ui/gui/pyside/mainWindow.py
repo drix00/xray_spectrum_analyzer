@@ -16,6 +16,7 @@ __license__ = ""
 # Standard library modules.
 import sys
 import logging
+from logging.handlers import RotatingFileHandler
 
 # Third party modules.
 from PySide import QtCore
@@ -27,7 +28,7 @@ from PySide import QtGui
 
 # Globals and constants variables.
 # create logger
-module_logger = logging.getLogger('pySpectrumAnalyzer')
+MODULE_LOGGER = logging.getLogger('pySpectrumAnalyzer')
 
 class MainWindow(QtGui.QWidget):
     def __init__(self):
@@ -85,12 +86,12 @@ class MainWindow(QtGui.QWidget):
 def run():
     LOG_FILENAME = 'pySpectrumAnalyzer.log'
     #fh = logging.FileHandler(LOG_FILENAME)
-    fh = logging.handlers.RotatingFileHandler(LOG_FILENAME, maxBytes=1024*30, backupCount=10)
+    fh = RotatingFileHandler(LOG_FILENAME, maxBytes=1024*30, backupCount=10)
     fh.setLevel(logging.DEBUG)
     # create formatter and add it to the handlers
     formatter = logging.Formatter('%(asctime)s : %(name)s : %(levelname)s : %(message)s')
     fh.setFormatter(formatter)
-    module_logger.addHandler(fh)
+    MODULE_LOGGER.addHandler(fh)
 
     # Create a Qt application.
     app = QtGui.QApplication(sys.argv)
