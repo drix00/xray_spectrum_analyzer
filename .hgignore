@@ -3,3 +3,4 @@ testData/
 *.cfg
 .coverage
 *.pyc
+*.log
