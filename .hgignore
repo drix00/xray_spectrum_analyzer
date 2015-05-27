@@ -4,3 +4,4 @@ testData/
 .coverage
 *.pyc
 *.log
+pySpectrumAnalyzer.egg-info/
