@@ -33,7 +33,7 @@ from matplotlib.figure import Figure
 # Project modules
 
 # Globals and constants variables.
-# create logger
+
 APPLICATION_NAME = "pySpectrumAnalyzer"
 ORGANIZATION_NAME = "McGill University"
 LOG_FILENAME = APPLICATION_NAME + '.log'
@@ -49,42 +49,72 @@ class MainWindow(QtGui.QMainWindow):
 
         super(MainWindow, self).__init__()
 
-        self.initUI()
+        self.create_gui()
 
-    def initUI(self):
-        self.logger.info("MainWindow.initUI")
+# TODO: Add Menubar
+# TODO: Add statusbar
+# TODO: Save project (autosave)
+# TODO: Add toolbars
+# TODO: Add spectrum list
+# TODO: Add spectrum display
+# TODO: Add ROI list
+# TODO: Add ROI display
+# TODO: Elements list
+# TODO: Element+line display
+# TODO: Add main window
+# TODO: Add layout management
+# TODO: Add log file
+# TODO: Fit dialog recipe
+# TODO: Add drag and drop
 
-        QtGui.QToolTip.setFont(QtGui.QFont('SansSerif', 10))
-        self.setToolTip('This is a <b>QWidget</b> widget')
+    def create_gui(self):
+        self.logger.info("MainWindow.create_gui")
 
+        self._create_main_window()
+        self._create_actions()
+        self._create_menus()
+        self._create_toolbars()
+        self._create_tooltip()
+        self._create_spectra_display()
+        self._create_layout()
+        self._create_statusbar()
+
+        self._read_settings()
+
+        self.show()
+
+    def _create_main_window(self):
         self.setGeometry(300, 300, 500, 500)
         self.setWindowTitle('Spectum Analyzer')
         self.setWindowIcon(QtGui.QIcon('../../../images/cog-8x.png'))
-        self.center()
+        self._center_main_window()
 
-        self.textEdit = QtGui.QTextEdit()
+    def _center_main_window(self):
+        self.logger.info("MainWindow._center_main_window")
 
-        self.plotGroupBox = QtGui.QGroupBox("Plot layout")
-        # generate the plot
-        fig = Figure(figsize=(600,600), dpi=72, facecolor=(1,1,1), edgecolor=(0,0,0))
-        ax = fig.add_subplot(111)
-        ax.plot([0,1])
-        # generate the canvas to display the plot
-        canvas1 = FigureCanvas(fig)
-        # create a layout inside the blank widget and add the matplotlib widget
-        layout = QtGui.QVBoxLayout()
-        layout.addWidget(canvas1, 1)
+        qr = self.frameGeometry()
+        cp = QtGui.QDesktopWidget().availableGeometry().center()
+        qr.moveCenter(cp)
+        self.move(qr.topLeft())
 
-        # generate the plot
-        fig = Figure(figsize=(600,600), dpi=72, facecolor=(1,1,1), edgecolor=(0,0,0))
-        ax = fig.add_subplot(111)
-        ax.plot([0,2])
-        # generate the canvas to display the plot
-        canvas2 = FigureCanvas(fig)
-        # create a layout inside the blank widget and add the matplotlib widget
-        layout.addWidget(canvas2, 2)
-        self.plotGroupBox.setLayout(layout)
+    def _create_menus(self):
+        self.logger.info("MainWindow._create_menus")
 
+        self.fileMenu = self.menuBar().addMenu("&File")
+        self.fileMenu.addAction(self.newAct)
+        self.fileMenu.addAction(self.openAct)
+        self.fileMenu.addAction(self.saveAct)
+        self.fileMenu.addAction(self.saveAsAct)
+        self.fileMenu.addSeparator();
+        self.fileMenu.addAction(self.exitAct)
+
+        self.menuBar().addSeparator()
+
+        self.helpMenu = self.menuBar().addMenu("&Help")
+        self.helpMenu.addAction(self.aboutAct)
+        self.helpMenu.addAction(self.aboutQtAct)
+
+    def _create_layout(self):
         mainLayout = QtGui.QVBoxLayout()
         #mainLayout.setMenuBar(self.menuBar)
         #mainLayout.addWidget(self.horizontalGroupBox)
@@ -97,57 +127,44 @@ class MainWindow(QtGui.QMainWindow):
         self.mainGroupBox.setLayout(mainLayout)
         self.setCentralWidget(self.mainGroupBox)
 
-        self.createActions()
-        self.createMenus()
-        self.createToolBars()
-        self.createStatusBar()
 
-        self.createGridGroupBox()
+    def _create_spectra_display(self):
+        self.plotGroupBox = QtGui.QGroupBox("Plot layout")
+        # generate the plot
+        fig = Figure(figsize=(600, 600), dpi=72, facecolor=(1, 1, 1), edgecolor=(0, 0, 0))
+        ax = fig.add_subplot(111)
+        ax.plot([0, 1])
+        # generate the canvas to display the plot
+        canvas1 = FigureCanvas(fig)
+        # create a layout inside the blank widget and add the matplotlib widget
+        layout = QtGui.QVBoxLayout()
+        layout.addWidget(canvas1, 1)
+        # generate the plot
+        fig = Figure(figsize=(600, 600), dpi=72, facecolor=(1, 1, 1), edgecolor=(0, 0, 0))
+        ax = fig.add_subplot(111)
+        ax.plot([0, 2])
+        # generate the canvas to display the plot
+        canvas2 = FigureCanvas(fig)
+        # create a layout inside the blank widget and add the matplotlib widget
+        layout.addWidget(canvas2, 2)
+        self.plotGroupBox.setLayout(layout)
 
-        self.readSettings()
+    def _create_tooltip(self):
+        QtGui.QToolTip.setFont(QtGui.QFont('SansSerif', 10))
+        self.setToolTip('This is a <b>QWidget</b> widget')
 
-        self.show()
+    def _create_actions(self):
+        self.logger.info("MainWindow._create_actions")
 
-    def center(self):
-        self.logger.info("MainWindow.center")
-
-        qr = self.frameGeometry()
-        cp = QtGui.QDesktopWidget().availableGeometry().center()
-        qr.moveCenter(cp)
-        self.move(qr.topLeft())
-
-    def createGridGroupBox(self):
-        self.logger.info("MainWindow.createGridGroupBox")
-
-        self.gridGroupBox = QtGui.QGroupBox("Grid layout")
-        layout = QtGui.QGridLayout()
-
-        for i in range(MainWindow.NumGridRows):
-            label = QtGui.QLabel("Line %d:" % (i + 1))
-            lineEdit = QtGui.QLineEdit()
-            layout.addWidget(label, i + 1, 0)
-            layout.addWidget(lineEdit, i + 1, 1)
-
-        self.smallEditor = QtGui.QTextEdit()
-        self.smallEditor.setPlainText("This widget takes up about two thirds "
-                                      "of the grid layout.")
-        layout.addWidget(self.smallEditor, 0, 2, 4, 1)
-        layout.setColumnStretch(1, 10)
-        layout.setColumnStretch(2, 20)
-        self.gridGroupBox.setLayout(layout)
-
-    def createActions(self):
-        self.logger.info("MainWindow.createActions")
-
-        self.newAct = QtGui.QAction(QtGui.QIcon(':/images/new.png'), "&New",
+        self.newAct = QtGui.QAction(QtGui.QIcon('../../../../images/new.png'), "&New",
                 self, shortcut=QtGui.QKeySequence.New,
                 statusTip="Create a new file", triggered=self.newFile)
 
-        self.openAct = QtGui.QAction(QtGui.QIcon(':/images/open.png'),
+        self.openAct = QtGui.QAction(QtGui.QIcon('../../../../images/open.png'),
                 "&Open...", self, shortcut=QtGui.QKeySequence.Open,
                 statusTip="Open an existing file", triggered=self.open)
 
-        self.saveAct = QtGui.QAction(QtGui.QIcon(':/images/save.png'),
+        self.saveAct = QtGui.QAction(QtGui.QIcon('../../../../images/save.png'),
                 "&Save", self, shortcut=QtGui.QKeySequence.Save,
                 statusTip="Save the document to disk", triggered=self.save)
 
@@ -156,23 +173,11 @@ class MainWindow(QtGui.QMainWindow):
                 statusTip="Save the document under a new name",
                 triggered=self.saveAs)
 
-        self.exitAct = QtGui.QAction("E&xit", self, shortcut="Ctrl+Q",
+        self.exitAct = QtGui.QAction(QtGui.QIcon('../../../../images/system-log-out.png'),
+                                     "E&xit", self, shortcut="Ctrl+Q",
                 statusTip="Exit the application", triggered=self.close)
 
-        self.cutAct = QtGui.QAction(QtGui.QIcon(':/images/cut.png'), "Cu&t",
-                self, shortcut=QtGui.QKeySequence.Cut,
-                statusTip="Cut the current selection's contents to the clipboard",
-                triggered=self.textEdit.cut)
-
-        self.copyAct = QtGui.QAction(QtGui.QIcon(':/images/copy.png'),
-                "&Copy", self, shortcut=QtGui.QKeySequence.Copy,
-                statusTip="Copy the current selection's contents to the clipboard",
-                triggered=self.textEdit.copy)
-
-        self.pasteAct = QtGui.QAction(QtGui.QIcon(':/images/paste.png'),
-                "&Paste", self, shortcut=QtGui.QKeySequence.Paste,
-                statusTip="Paste the clipboard's contents into the current selection",
-                triggered=self.textEdit.paste)
+        self.textEdit = QtGui.QTextEdit()
 
         self.aboutAct = QtGui.QAction("&About", self,
                 statusTip="Show the application's About box",
@@ -182,53 +187,21 @@ class MainWindow(QtGui.QMainWindow):
                 statusTip="Show the Qt library's About box",
                 triggered=QtGui.qApp.aboutQt)
 
-        self.cutAct.setEnabled(False)
-        self.copyAct.setEnabled(False)
-        self.textEdit.copyAvailable.connect(self.cutAct.setEnabled)
-        self.textEdit.copyAvailable.connect(self.copyAct.setEnabled)
-
-    def createMenus(self):
-        self.logger.info("MainWindow.createMenus")
-
-        self.fileMenu = self.menuBar().addMenu("&File")
-        self.fileMenu.addAction(self.newAct)
-        self.fileMenu.addAction(self.openAct)
-        self.fileMenu.addAction(self.saveAct)
-        self.fileMenu.addAction(self.saveAsAct)
-        self.fileMenu.addSeparator();
-        self.fileMenu.addAction(self.exitAct)
-
-        self.editMenu = self.menuBar().addMenu("&Edit")
-        self.editMenu.addAction(self.cutAct)
-        self.editMenu.addAction(self.copyAct)
-        self.editMenu.addAction(self.pasteAct)
-
-        self.menuBar().addSeparator()
-
-        self.helpMenu = self.menuBar().addMenu("&Help")
-        self.helpMenu.addAction(self.aboutAct)
-        self.helpMenu.addAction(self.aboutQtAct)
-
-    def createToolBars(self):
-        self.logger.info("MainWindow.createToolBars")
+    def _create_toolbars(self):
+        self.logger.info("MainWindow._create_toolbars")
 
         self.fileToolBar = self.addToolBar("File")
         self.fileToolBar.addAction(self.newAct)
         self.fileToolBar.addAction(self.openAct)
         self.fileToolBar.addAction(self.saveAct)
 
-        self.editToolBar = self.addToolBar("Edit")
-        self.editToolBar.addAction(self.cutAct)
-        self.editToolBar.addAction(self.copyAct)
-        self.editToolBar.addAction(self.pasteAct)
-
-    def createStatusBar(self):
-        self.logger.info("MainWindow.createStatusBar")
+    def _create_statusbar(self):
+        self.logger.info("MainWindow._create_statusbar")
 
         self.statusBar().showMessage("Ready")
 
-    def readSettings(self):
-        self.logger.info("MainWindow.readSettings")
+    def _read_settings(self):
+        self.logger.info("MainWindow._read_settings")
 
         settings = QtCore.QSettings(ORGANIZATION_NAME, APPLICATION_NAME)
         pos = settings.value("pos", QtCore.QPoint(200, 200))
@@ -236,8 +209,8 @@ class MainWindow(QtGui.QMainWindow):
         self.resize(size)
         self.move(pos)
 
-    def writeSettings(self):
-        self.logger.info("MainWindow.writeSettings")
+    def _write_settings(self):
+        self.logger.info("MainWindow._write_settings")
 
         settings = QtCore.QSettings(ORGANIZATION_NAME, APPLICATION_NAME)
         settings.setValue("pos", self.pos())
@@ -262,7 +235,7 @@ class MainWindow(QtGui.QMainWindow):
         self.logger.info("MainWindow.closeEvent")
 
         if self.maybeSave():
-            self.writeSettings()
+            self._write_settings()
             event.accept()
         else:
             event.ignore()
@@ -302,15 +275,35 @@ class MainWindow(QtGui.QMainWindow):
     def about(self):
         self.logger.info("MainWindow.about")
 
-        QtGui.QMessageBox.about(self, "About Application",
-                "The <b>Application</b> example demonstrates how to write "
-                "modern GUI applications using Qt, with a menu bar, "
-                "toolbars, and a status bar.")
+        QtGui.QMessageBox.about(self, "About pySpectrumAnalyzer",
+                "The <b>pySpectrumAnalyzer</b> extract peak intensity from EDS spectrum.")
 
     def documentWasModified(self):
         self.logger.info("MainWindow.documentWasModified")
 
         self.setWindowModified(self.textEdit.document().isModified())
+
+# TODO: Add background models.
+# TODO: Add FFT filters
+# TODO: Add find hidden peaks
+# TODO: Add ROI manager
+# TODO: Add Detector efficiency manager
+# TODO: Add sum peak corrections
+# TODO: Add peak finder
+# TODO: Add detector artifacts
+# TODO: Add results table
+# TODO: Element identifications
+# TODO: Background estimation
+# TODO: Results display
+# TODO: Specimen description: coating
+# TODO: Predefined elements
+# TODO: Normalized spectra: point and region
+# TODO: Noise peak
+# TODO: Confirm elements
+# TODO: Detector parameters
+# TODO: Energy-channel calibration
+# TODO: Reference spectra
+# TODO: instrument parameters
 
 def createApplication():
     application = QtGui.QApplication(sys.argv)
@@ -344,8 +337,10 @@ def run():
     # Note application and mainWin have to be declared in the same method.
     application = createApplication()
     startLogging()
-    mainWin = MainWindow()
-    mainWin.show()
+
+    mainWindow = MainWindow()
+    mainWindow.show()
+
     sys.exit(application.exec_())
 
 if __name__ == '__main__': #pragma: no cover
