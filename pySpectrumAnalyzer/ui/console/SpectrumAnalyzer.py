@@ -903,7 +903,7 @@ class SpectrumAnalyzer(object):
         spectrumFilename = os.path.basename(self._spectrumFilepath)
         filename, _extension = os.path.splitext(spectrumFilename)
         intensitiesFilepath = os.path.join(self._outputPath, filename+'.csv')
-        writer = csv.writer(open(intensitiesFilepath, 'wb'))
+        writer = csv.writer(open(intensitiesFilepath, 'w', newline='\n'))
 
         rowHeader = ["Line", "Counts", "Background", "Position (keV)", "FWHM (eV)", "Counts (1.2*FWHM)", "Background (1.2*FWHM)"]
         writer.writerow(rowHeader)
