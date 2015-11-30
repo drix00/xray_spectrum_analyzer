@@ -5,3 +5,4 @@ testData/
 *.pyc
 *.log
 pySpectrumAnalyzer.egg-info/
+.eggs
