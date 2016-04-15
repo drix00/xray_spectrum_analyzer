@@ -21,7 +21,7 @@ import csv
 
 # Third party modules.
 import matplotlib
-matplotlib.use('Agg')
+#matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from matplotlib.text import OffsetFrom
 import numpy as np
@@ -404,7 +404,7 @@ class SpectrumAnalyzer(object):
         if isLogScale:
             graphicFilename += '_Log'
 
-        for extension in ['.pdf', '.png']:
+        for extension in ['.png']:
             graphicFilepath = os.path.join(self._outputPath, graphicFilename+extension)
             plt.savefig(graphicFilepath)
 
@@ -462,7 +462,7 @@ class SpectrumAnalyzer(object):
         if isLogScale:
             graphicFilename += '_Log'
 
-        for extension in ['.pdf', '.png']:
+        for extension in ['.png']:
             graphicFilepath = os.path.join(self._outputPath, graphicFilename+extension)
             plt.savefig(graphicFilepath)
 
@@ -604,13 +604,12 @@ class SpectrumAnalyzer(object):
         roiMax = np.max(yRoi)
 
         for position_keV, fraction, label in roiPeaks:
-
             sigmaGuess = self._detector.getSigma_keV(position_keV)
             key = "%s_%s" % (label.replace(' ', '_'), "sigma")
             if label == 'n':
                 parameters.add(key, value=sigmaGuess, min=0.0)
             else:
-                parameters.add(key, value=sigmaGuess, min=self._detector.getSigma_keV(0.0), max=2.0*sigmaGuess)
+                parameters.add(key, value=sigmaGuess, min=sigmaGuess*0.9, max=sigmaGuess*1.1)
 
             areaGuess = roiMax*fraction*sigmaGuess*np.sqrt(2.0 * np.pi)
             key = "%s_%s" % (label.replace(' ', '_'), "area")
@@ -663,7 +662,7 @@ class SpectrumAnalyzer(object):
         #result  = minimize(residual, parameters, args=(xRoi, yRoi))
 
         xFit = xRoi
-        yFit = functionModel(parameters, xFit)
+        yFit = functionModel(result.params, xFit)
 
         #logging.info("Fit succes?: %s", result.success)
         #logging.info("Number evaluation: %i", result.nfev)
@@ -673,7 +672,7 @@ class SpectrumAnalyzer(object):
         #logging.info("reduced chi2: %s", result.redchi)
 
         logging.info('Best-Fit Values:')
-        for name, par in parameters.items():
+        for name, par in result.params.items():
             logging.info('  %s = %.4f +/- %.4f', name, par.value, par.stderr)
 
         left= 0.1
@@ -698,12 +697,12 @@ class SpectrumAnalyzer(object):
         axScatter.plot(xRoi, yRoi, '.', label='Data')
         axScatter.plot(xFit, yFit, label='Fit')
 
-        yFitLB = functionBackground(parameters, xFit)
+        yFitLB = functionBackground(result.params, xFit)
         axScatter.plot(xFit, yFitLB, label='Fit LB')
 
         for position_keV, fraction, label in roiPeaks:
             baseKey = label.replace(' ', '_')
-            yFitP = peakFunction(parameters, xFit, baseKey)
+            yFitP = peakFunction(result.params, xFit, baseKey)
             axScatter.plot(xFit, yFitP, label='Fit %s' % (label))
 
         axScatter.set_xlim(xRoi[0], xRoi[-1])
@@ -721,7 +720,7 @@ class SpectrumAnalyzer(object):
         path, basename = os.path.split(basefilepath)
         basefilepath = os.path.join(path, "Analyze", basename)
         roiFitFigureFilepath = basefilepath + '_' + roiLabel.replace(" ", '_')
-        for extension in ['.png', '.pdf']:
+        for extension in ['.png']:
             figure.savefig(roiFitFigureFilepath+extension)
 
         if self.exportRois:
@@ -735,13 +734,13 @@ class SpectrumAnalyzer(object):
 
         for _position_keV, _fraction, label in roiPeaks:
             baseKey = label.replace(' ', '_')
-            yFitP = peakFunction(parameters, xFit, baseKey)
-            yBackground = functionBackground(parameters, xFit)
+            yFitP = peakFunction(result.params, xFit, baseKey)
+            yBackground = functionBackground(result.params, xFit)
 
             key = "%s_%s" % (baseKey, "position")
-            position_keV = parameters[key].value
+            position_keV = result.params[key].value
             key = "%s_%s" % (baseKey, "sigma")
-            sigma_keV = parameters[key].value
+            sigma_keV = result.params[key].value
 
             peakIntensity = PeakIntensity(xFit, yFitP, yBackground, position_keV, sigma_keV, label)
             peakIntensities.append(peakIntensity)
@@ -879,7 +878,7 @@ class SpectrumAnalyzer(object):
         path, basename = os.path.split(basefilepath)
         basefilepath = os.path.join(path, "Analyze", basename)
         roiFitFigureFilepath = basefilepath + '_' + roiLabel.replace(" ", '_')
-        for extension in ['.png', '.pdf']:
+        for extension in ['.png']:
             figure.savefig(roiFitFigureFilepath+extension)
 
         plt.clf()
