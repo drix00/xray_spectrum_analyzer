@@ -20,12 +20,12 @@ import math
 import csv
 
 # Third party modules.
-import matplotlib
+#import matplotlib
 #matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from matplotlib.text import OffsetFrom
 import numpy as np
-from scipy.optimize import leastsq
+from scipy.interpolate import interp1d
 
 from lmfit import minimize, Parameters
 
@@ -36,9 +36,8 @@ import pySpectrumFileFormat.Bruker.ExportedCsvFile as ExportedCsvFile
 
 import pyHendrixDemersTools.Files as Files
 import pyHendrixDemersTools.Graphics as Graphics
-from pyFitTools.fitTools import FitFunctions, calculateR2
-from pyFitTools.FitPolynomialFunction import FitPolynomialFirstDegreeFunction, PolynomialFirstDegreeFunction
-from pyFitTools.FitGaussianFunction import FitGaussianFunction, GaussianFunction
+from pyFitTools.FitPolynomialFunction import PolynomialFirstDegreeFunction
+from pyFitTools.FitGaussianFunction import GaussianFunction
 
 # Project modules
 import pySpectrumAnalyzer.ui.console.XrayLineReferenceManager as XrayLineReferenceManager
@@ -47,6 +46,7 @@ import pySpectrumAnalyzer.ui.console.XrayLineReferenceManager as XrayLineReferen
 DEBUG = False
 
 FIT_METHOD_PEAK = "fitMethodPeak"
+FIT_METHOD_PEAK_FAMILY = "fitMethodPeakFamily"
 FIT_METHOD_ROI = "fitMethodRoi"
 FIT_METHOD_SPECTRUM = "fitMethodSpectrum"
 
@@ -203,7 +203,9 @@ class Roi(object):
 
 class SpectrumAnalyzer(object):
     def __init__(self, outputPath=None, configurationFilepath=None, keepGraphic=True):
-        self._outputPath = Files.createPath(outputPath)
+        if outputPath is not None:
+            self._outputPath = Files.createPath(outputPath)
+
         self._configurationFilepath = configurationFilepath
         self._keepGraphic = keepGraphic
 
@@ -284,19 +286,24 @@ class SpectrumAnalyzer(object):
 
         self.maximumEnergy_keV = spectrum.primaryEnergy_keV
 
-    def plotSpectrum(self, yLog=False):
+    def plotSpectrum(self, figure=None, yLog=False):
         xData = np.array(self._spectrum.getDataX())
         if self._spectrum.getXUnits() == 'eV':
             xData *= 1.0e-3
 
         yData = np.array(self._spectrum.getDataY())
 
-        plt.figure()
+        if figure is None:
+            figure = plt.figure()
+        else:
+            figure.clear()
+
+        axes = figure.add_subplot(111)
 
         if yLog:
-            plt.semilogy(xData, yData)
+            axes.semilogy(xData, yData)
         else:
-            plt.plot(xData, yData)
+            axes.plot(xData, yData)
 
         if self.showEdgeMarkers:
             self._addEdgeMarkers()
@@ -318,12 +325,12 @@ class SpectrumAnalyzer(object):
 
         self._addRequiredLines()
 
-        plt.xlabel("Energy (keV)")
-        plt.ylabel("Counts")
+        axes.set_xlabel("Energy (keV)")
+        axes.set_ylabel("Counts")
 
         if self.maximumEnergy_keV is not None:
             xMin = np.min(xData)
-            plt.xlim((xMin, self.maximumEnergy_keV))
+            axes.set_xlim((xMin, self.maximumEnergy_keV))
 
     def fitRoi(self, roiName):
         xData = np.array(self._spectrum.xdata)
@@ -548,6 +555,8 @@ class SpectrumAnalyzer(object):
 
         if self.fitMethod == FIT_METHOD_PEAK:
             peakIntensities = self._fitPeaks(xRoi, yRoi, roiPeaks, roi.label)
+        elif self.fitMethod == FIT_METHOD_PEAK_FAMILY:
+            peakIntensities = self._fitPeaksFamily(xRoi, yRoi, roiPeaks, roi.label)
         elif self.fitMethod == FIT_METHOD_ROI:
             peakIntensities = self._fitRoiPeaks(xRoi, yRoi, roiPeaks, roi.label)
         elif self.fitMethod == FIT_METHOD_SPECTRUM:
@@ -746,6 +755,182 @@ class SpectrumAnalyzer(object):
             peakIntensities.append(peakIntensity)
 
         return peakIntensities
+
+    def _fitPeaksFamily(self, xRoi, yRoi, roiPeaks, roiLabel):
+        parameters = Parameters()
+
+        assert len(xRoi) > 0, roiLabel
+        assert len(yRoi) > 0, roiLabel
+
+        aGuess, bGuess = self._computeLinearBackgroundGuess(xRoi, yRoi)
+        parameters.add('lb_a', value=aGuess, vary=True)
+        parameters.add('lb_b', value=bGuess, vary=True)
+
+        roiMax = np.max(yRoi)
+
+        peak_family_list = self._get_peak_family_list(roiPeaks)
+
+        for peak_family_label in peak_family_list:
+            print(peak_family_label)
+
+            family_position_keV = None
+            for position_keV, fraction, label in peak_family_list[peak_family_label]:
+                if label.endswith('a1') or peak_family_label == 'n':
+                    family_position_keV = position_keV
+                    family_height = interp1d(xRoi, yRoi)(position_keV)
+
+            parameters.add(peak_family_label+"_height", value=roiMax, min=0.0)
+
+            if peak_family_label == 'n':
+                parameters.add(peak_family_label+"_position", value=position_keV)
+            else:
+                positionMin_keV = family_position_keV - self._maximumPositionError_keV
+                positionMax_keV = family_position_keV + self._maximumPositionError_keV
+                parameters.add(peak_family_label+"_position", value=family_position_keV, min=positionMin_keV, max=positionMax_keV)
+
+        def functionBackground(parameters, x):
+            a = parameters['lb_a'].value
+            b = parameters['lb_b'].value
+            linearBackground = PolynomialFirstDegreeFunction(a=a, b=b)
+
+            return linearBackground(x)
+
+        def functionModel(parameters, x):
+            model = functionBackground(parameters, x)
+
+            for peak_family_label in peak_family_list:
+                family_height = parameters[peak_family_label+"_height"]
+                family_position_keV = parameters[peak_family_label+"_position"]
+
+                family_positionRef_keV = None
+                for position_keV, fraction, label in peak_family_list[peak_family_label]:
+                    if label.endswith('a1') or peak_family_label == 'n':
+                        family_positionRef_keV = position_keV
+
+                delta_position = family_positionRef_keV - family_position_keV
+                for position_keV, fraction, label in peak_family_list[peak_family_label]:
+                    mu = position_keV - delta_position
+                    sigma = self._detector.getSigma_keV(position_keV)
+                    area = family_height*fraction*sigma*np.sqrt(2.0 * np.pi)
+                    peakFunction = GaussianFunction(area=area, mu=mu, sigma=sigma);
+                    model += peakFunction(x)
+
+            return model
+
+        def residual(parameters, x, data):
+            model = functionModel(parameters, x)
+            return (data-model)
+
+        result  = minimize(residual, parameters, args=(xRoi, yRoi))
+
+        xFit = xRoi
+        yFit = functionModel(result.params, xFit)
+
+        logging.info('Best-Fit Values:')
+        for name, par in result.params.items():
+            logging.info('  %s = %.4f +/- %.4f', name, par.value, par.stderr)
+
+        left= 0.1
+        width = 1.0 - 2.0 * left
+
+        bottom_h = 0.1
+        height_h = 0.1
+        bottom = bottom_h + height_h + 0.02
+        height = 1.0 - bottom - 0.1
+
+        assert (left + width) <= 1.0
+        assert (bottom + height) <= 1.0
+
+        rectA_profile = [left, bottom, width, height]
+        rectA_residual = [left, bottom_h, width, height_h]
+
+        figure = plt.figure()
+        #figure.clf()
+        figure.suptitle(roiLabel, fontsize=16)
+        axScatter = figure.add_axes(rectA_profile)
+
+        axScatter.plot(xRoi, yRoi, '.', label='Data')
+        axScatter.plot(xFit, yFit, label='Fit')
+
+        yFitLB = functionBackground(result.params, xFit)
+        axScatter.plot(xFit, yFitLB, label='Fit LB')
+
+        for peak_family_label in peak_family_list:
+            family_height = result.params[peak_family_label+"_height"]
+            family_position_keV = result.params[peak_family_label+"_position"]
+
+            yFitP = np.zeros_like(xFit)
+            family_positionRef_keV = None
+            for position_keV, fraction, label in peak_family_list[peak_family_label]:
+                if label.endswith('a1') or peak_family_label == 'n':
+                    family_positionRef_keV = position_keV
+
+            delta_position = family_positionRef_keV - family_position_keV
+            for position_keV, fraction, label in peak_family_list[peak_family_label]:
+                mu = position_keV - delta_position
+                sigma = self._detector.getSigma_keV(position_keV)
+                area = family_height*fraction*sigma*np.sqrt(2.0 * np.pi)
+                peakFunction = GaussianFunction(area=area, mu=mu, sigma=sigma);
+                yFitP += peakFunction(xFit)
+
+            axScatter.plot(xFit, yFitP, label='Fit %s' % (peak_family_label))
+
+        axScatter.set_xlim(xRoi[0], xRoi[-1])
+        axScatter.set_xticks([])
+
+        axScatter.legend(loc='best')
+
+        residual = yRoi - yFit
+        axHistx = figure.add_axes(rectA_residual)
+        axHistx.plot(xFit, residual, label='Residual')
+        axHistx.set_xlim(xRoi[0], xRoi[-1])
+        axHistx.locator_params(axis='y', tight=True, nbins=4)
+
+        basefilepath, _extension = os.path.splitext(self._spectrumFilepath)
+        path, basename = os.path.split(basefilepath)
+        basefilepath = os.path.join(path, "Analyze", basename)
+        roiFitFigureFilepath = basefilepath + '_' + roiLabel.replace(" ", '_')
+        for extension in ['.png']:
+            figure.savefig(roiFitFigureFilepath+extension)
+
+        if self.exportRois:
+            Graphics.saveFigureData(roiFitFigureFilepath+".csv")
+
+        plt.clf()
+        plt.close()
+        del figure
+
+        peakIntensities = []
+        for peak_family_label in peak_family_list:
+            family_height = result.params[peak_family_label+"_height"]
+            family_position_keV = result.params[peak_family_label+"_position"]
+
+            family_positionRef_keV = None
+            for position_keV, fraction, label in peak_family_list[peak_family_label]:
+                if label.endswith('a1') or peak_family_label == 'n':
+                    family_positionRef_keV = position_keV
+
+            delta_position = family_positionRef_keV - family_position_keV
+            for position_keV, fraction, label in peak_family_list[peak_family_label]:
+                mu = position_keV - delta_position
+                sigma_keV = self._detector.getSigma_keV(position_keV)
+                area = family_height*fraction*sigma*np.sqrt(2.0 * np.pi)
+                yFitP = GaussianFunction(area=area, mu=mu, sigma=sigma_keV)(xFit);
+
+                yBackground = functionBackground(result.params, xFit)
+
+                peakIntensity = PeakIntensity(xFit, yFitP, yBackground, mu, sigma_keV, label)
+                peakIntensities.append(peakIntensity)
+
+        return peakIntensities
+
+    def _get_peak_family_list(self, roiPeaks):
+        peak_family_list = {}
+        for position_keV, fraction, label in roiPeaks:
+            peak_family_label = label[:4].replace(' ', '_')
+            peak_family_list.setdefault(peak_family_label, []).append([position_keV, fraction, label])
+
+        return peak_family_list
 
     def _fitRoiPeaks(self, xRoi, yRoi, roiPeaks, roiLabel):
         from lmfit import minimize, Parameters
