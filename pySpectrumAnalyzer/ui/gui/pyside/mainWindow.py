@@ -25,10 +25,14 @@ from PySide import QtGui
 import matplotlib
 matplotlib.use('Qt4Agg')
 matplotlib.rcParams['backend.qt4']='PySide'
+from matplotlib.backend_bases import key_press_handler
 from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT as NavigationToolbar
 from matplotlib.figure import Figure
 
 # Local modules.
+import pyHendrixDemersTools.Files as Files
+import pySpectrumAnalyzer.ui.console.SpectrumAnalyzer as SpectrumAnalyzer
 
 # Project modules
 
@@ -49,7 +53,15 @@ class MainWindow(QtGui.QMainWindow):
 
         super(MainWindow, self).__init__()
 
+        QtGui.QIcon.setThemeSearchPaths(QtGui.QIcon.themeSearchPaths() + ["D:\work\codings\hendrix_demersBitbucket\pyspectrumanalyzer\resource\oxygen-icons-png-master"])
+        QtGui.QIcon.setThemeName('oxygen')
+        print(QtGui.QIcon.fromTheme('document-save').isNull())
         self.create_gui()
+
+        currentPath = Files.getCurrentModulePath(__file__)
+        configurationFilepath = os.path.join(currentPath, "../../../SpectrumAnalyzer.cfg")
+
+        self.spectrumAnalyzer = SpectrumAnalyzer.SpectrumAnalyzer(configurationFilepath=configurationFilepath, keepGraphic=False)
 
 # TODO: Add Menubar
 # TODO: Add statusbar
@@ -76,6 +88,8 @@ class MainWindow(QtGui.QMainWindow):
         self._create_toolbars()
         self._create_tooltip()
         self._create_spectra_display()
+        self._create_data_display()
+        self._create_operations_display()
         self._create_layout()
         self._create_statusbar()
 
@@ -85,8 +99,9 @@ class MainWindow(QtGui.QMainWindow):
 
     def _create_main_window(self):
         self.setGeometry(300, 300, 500, 500)
-        self.setWindowTitle('Spectum Analyzer')
-        self.setWindowIcon(QtGui.QIcon('../../../images/cog-8x.png'))
+        self.setWindowTitle('Spectrum Analyzer')
+        #self.setWindowIcon(QtGui.QIcon('../../../images/cog.svg'))
+        self.setWindowIcon(self.style().standardIcon(QtGui.QStyle.SP_DesktopIcon))
         self._center_main_window()
 
     def _center_main_window(self):
@@ -115,39 +130,80 @@ class MainWindow(QtGui.QMainWindow):
         self.helpMenu.addAction(self.aboutQtAct)
 
     def _create_layout(self):
-        mainLayout = QtGui.QVBoxLayout()
-        #mainLayout.setMenuBar(self.menuBar)
-        #mainLayout.addWidget(self.horizontalGroupBox)
-        #mainLayout.addWidget(self.gridGroupBox)
-        #mainLayout.addWidget(self.formGroupBox)
-        #mainLayout.addWidget(bigEditor)
+        mainLayout = QtGui.QHBoxLayout()
+        mainLayout.addWidget(self.dataGroupBox)
         mainLayout.addWidget(self.plotGroupBox)
-        #self.setLayout(mainLayout)
+        mainLayout.addWidget(self.operationsGroupBox)
+
         self.mainGroupBox = QtGui.QGroupBox("Main layout")
         self.mainGroupBox.setLayout(mainLayout)
         self.setCentralWidget(self.mainGroupBox)
 
-
     def _create_spectra_display(self):
         self.plotGroupBox = QtGui.QGroupBox("Plot layout")
-        # generate the plot
-        fig = Figure(figsize=(600, 600), dpi=72, facecolor=(1, 1, 1), edgecolor=(0, 0, 0))
-        ax = fig.add_subplot(111)
-        ax.plot([0, 1])
-        # generate the canvas to display the plot
-        canvas1 = FigureCanvas(fig)
-        # create a layout inside the blank widget and add the matplotlib widget
+
+        self.figure1 = Figure(facecolor=(1, 1, 1), edgecolor=(0, 0, 0))
+        self.canvas1 = FigureCanvas(self.figure1)
+        self.canvas1.setParent(self.plotGroupBox)
+        self.canvas1.setFocusPolicy(QtCore.Qt.StrongFocus)
+        self.canvas1.setFocus()
+        self.canvas1.setSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
+        self.canvas1.updateGeometry()
+
+        self.mpl_toolbar1 = NavigationToolbar(self.canvas1, self.plotGroupBox)
+        self.canvas1.mpl_connect('key_press_event', self.on_key_press)
+
+        self.figure2 = Figure(facecolor=(1, 1, 1), edgecolor=(0, 0, 0))
+        self.canvas2 = FigureCanvas(self.figure2)
+        self.canvas2.setParent(self.plotGroupBox)
+        self.mpl_toolbar2 = NavigationToolbar(self.canvas1, self.plotGroupBox)
+
         layout = QtGui.QVBoxLayout()
-        layout.addWidget(canvas1, 1)
-        # generate the plot
-        fig = Figure(figsize=(600, 600), dpi=72, facecolor=(1, 1, 1), edgecolor=(0, 0, 0))
-        ax = fig.add_subplot(111)
-        ax.plot([0, 2])
-        # generate the canvas to display the plot
-        canvas2 = FigureCanvas(fig)
-        # create a layout inside the blank widget and add the matplotlib widget
-        layout.addWidget(canvas2, 2)
+        layout.addWidget(self.canvas1)
+        layout.addWidget(self.mpl_toolbar1)
+        layout.addWidget(self.canvas2)
+        layout.addWidget(self.mpl_toolbar2)
         self.plotGroupBox.setLayout(layout)
+
+    def _create_data_display(self):
+        self.dataGroupBox = QtGui.QGroupBox("Data layout")
+        data_layout = QtGui.QVBoxLayout()
+
+        group_box = QtGui.QGroupBox("Spectra")
+        self.spectra_list_view = QtGui.QListWidget(self)
+        self.spectra_list_view.setMinimumWidth(200)
+
+        layout = QtGui.QVBoxLayout()
+        layout.addWidget(self.spectra_list_view)
+        group_box.setLayout(layout)
+        data_layout.addWidget(group_box)
+
+        group_box = QtGui.QGroupBox("ROI")
+        roi_list_view = QtGui.QListWidget(self)
+        layout = QtGui.QVBoxLayout()
+        layout.addWidget(roi_list_view)
+        group_box.setLayout(layout)
+        data_layout.addWidget(group_box)
+
+        group_box = QtGui.QGroupBox("Elements")
+        element_list_view = QtGui.QListWidget(self)
+        layout = QtGui.QVBoxLayout()
+        layout.addWidget(element_list_view)
+        group_box.setLayout(layout)
+        data_layout.addWidget(group_box)
+
+        self.dataGroupBox.setLayout(data_layout)
+
+    def _create_operations_display(self):
+        self.operationsGroupBox = QtGui.QGroupBox("Operations layout")
+        results_layout = QtGui.QVBoxLayout()
+
+        group_box = QtGui.QGroupBox("Operation")
+        results_layout.addWidget(group_box)
+        group_box = QtGui.QGroupBox("Results")
+        results_layout.addWidget(group_box)
+
+        self.operationsGroupBox.setLayout(results_layout)
 
     def _create_tooltip(self):
         QtGui.QToolTip.setFont(QtGui.QFont('SansSerif', 10))
@@ -156,34 +212,34 @@ class MainWindow(QtGui.QMainWindow):
     def _create_actions(self):
         self.logger.info("MainWindow._create_actions")
 
-        self.newAct = QtGui.QAction(QtGui.QIcon('../../../../images/new.png'), "&New",
+        self.newAct = QtGui.QAction(self.style().standardIcon(QtGui.QStyle.SP_FileIcon), "&New",
                 self, shortcut=QtGui.QKeySequence.New,
                 statusTip="Create a new file", triggered=self.newFile)
 
-        self.openAct = QtGui.QAction(QtGui.QIcon('../../../../images/open.png'),
+        self.openAct = QtGui.QAction(self.style().standardIcon(QtGui.QStyle.SP_DirOpenIcon),
                 "&Open...", self, shortcut=QtGui.QKeySequence.Open,
                 statusTip="Open an existing file", triggered=self.open)
 
-        self.saveAct = QtGui.QAction(QtGui.QIcon('../../../../images/save.png'),
+        self.saveAct = QtGui.QAction(self.style().standardIcon(QtGui.QStyle.SP_DialogSaveButton),
                 "&Save", self, shortcut=QtGui.QKeySequence.Save,
                 statusTip="Save the document to disk", triggered=self.save)
 
-        self.saveAsAct = QtGui.QAction("Save &As...", self,
+        self.saveAsAct = QtGui.QAction(self.style().standardIcon(QtGui.QStyle.SP_DialogSaveButton), "Save &As...", self,
                 shortcut=QtGui.QKeySequence.SaveAs,
                 statusTip="Save the document under a new name",
                 triggered=self.saveAs)
 
-        self.exitAct = QtGui.QAction(QtGui.QIcon('../../../../images/system-log-out.png'),
+        self.exitAct = QtGui.QAction(self.style().standardIcon(QtGui.QStyle.SP_DialogCloseButton),
                                      "E&xit", self, shortcut="Ctrl+Q",
                 statusTip="Exit the application", triggered=self.close)
 
         self.textEdit = QtGui.QTextEdit()
 
-        self.aboutAct = QtGui.QAction("&About", self,
+        self.aboutAct = QtGui.QAction(self.style().standardIcon(QtGui.QStyle.SP_MessageBoxInformation), "&About", self,
                 statusTip="Show the application's About box",
                 triggered=self.about)
 
-        self.aboutQtAct = QtGui.QAction("About &Qt", self,
+        self.aboutQtAct = QtGui.QAction(self.style().standardIcon(QtGui.QStyle.SP_TitleBarMenuButton), "About &Qt", self,
                 statusTip="Show the Qt library's About box",
                 triggered=QtGui.qApp.aboutQt)
 
@@ -251,9 +307,13 @@ class MainWindow(QtGui.QMainWindow):
         self.logger.info("MainWindow.open")
 
         if self.maybeSave():
-            fileName, _filtr = QtGui.QFileDialog.getOpenFileName(self)
-            if fileName:
-                self.loadFile(fileName)
+            filepath, _filtr = QtGui.QFileDialog.getOpenFileName(self)
+            if filepath:
+                self.spectrumAnalyzer.readSpectrum(filepath)
+                filename = os.path.basename(filepath)
+                self.spectra_list_view.addItem(filename)
+                self.spectrumAnalyzer.plotSpectrum(self.figure1)
+                self.canvas1.draw()
 
     def save(self):
         self.logger.info("MainWindow.save")
@@ -282,6 +342,12 @@ class MainWindow(QtGui.QMainWindow):
         self.logger.info("MainWindow.documentWasModified")
 
         self.setWindowModified(self.textEdit.document().isModified())
+
+    def on_key_press(self, event):
+        print('you pressed', event.key)
+        # implement the default mpl key press events described at
+        # http://matplotlib.org/users/navigation_toolbar.html#navigation-keyboard-shortcuts
+        key_press_handler(event, self.canvas1, self.mpl_toolbar1)
 
 # TODO: Add background models.
 # TODO: Add FFT filters

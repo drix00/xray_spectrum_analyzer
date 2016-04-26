@@ -6,3 +6,4 @@ testData/
 *.log
 pySpectrumAnalyzer.egg-info/
 .eggs
+resource
