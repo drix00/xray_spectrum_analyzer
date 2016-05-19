@@ -163,9 +163,10 @@ class DetectorFunction(object):
         return self._electronicNoise_eV
 
 class Roi(object):
-    def __init__(self, label, energyRange_keV):
+    def __init__(self, label, energyRange_keV, no_background=False):
         self.label = label
         self.energyRange_keV = energyRange_keV
+        self.no_background = no_background
 
     def displayRoi(self, xData, yData):
         xData = np.array(xData)
@@ -243,11 +244,11 @@ class SpectrumAnalyzer(object):
     def addOmittedPeak(self, symbol, peakLabel):
         self._omittedPeaks.append((symbol, peakLabel))
 
-    def addRoi(self, label, energyRange_keV):
+    def addRoi(self, label, energyRange_keV, no_background=False):
         if self.maximumEnergy_keV is not None and energyRange_keV[0] > self.maximumEnergy_keV:
             logging.info("Roi not added, energy range greater than the primary energy")
         else:
-            roi = Roi(label, energyRange_keV)
+            roi = Roi(label, energyRange_keV, no_background)
             self._rois[label] = roi
 
     def readSpectrum(self, spectrumFilepath):
@@ -554,9 +555,9 @@ class SpectrumAnalyzer(object):
         roiPeaks = self.getRoiPeaks(roi)
 
         if self.fitMethod == FIT_METHOD_PEAK:
-            peakIntensities = self._fitPeaks(xRoi, yRoi, roiPeaks, roi.label)
+            peakIntensities = self._fitPeaks(xRoi, yRoi, roiPeaks, roi.label, no_background=roi.no_background)
         elif self.fitMethod == FIT_METHOD_PEAK_FAMILY:
-            peakIntensities = self._fitPeaksFamily(xRoi, yRoi, roiPeaks, roi.label)
+            peakIntensities = self._fitPeaksFamily(xRoi, yRoi, roiPeaks, roi.label, no_background=roi.no_background)
         elif self.fitMethod == FIT_METHOD_ROI:
             peakIntensities = self._fitRoiPeaks(xRoi, yRoi, roiPeaks, roi.label)
         elif self.fitMethod == FIT_METHOD_SPECTRUM:
@@ -600,7 +601,7 @@ class SpectrumAnalyzer(object):
 
         return roiPeaks
 
-    def _fitPeaks(self, xRoi, yRoi, roiPeaks, roiLabel):
+    def _fitPeaks(self, xRoi, yRoi, roiPeaks, roiLabel, no_background=False):
         parameters = Parameters()
 
         assert len(xRoi) > 0, roiLabel
@@ -756,15 +757,16 @@ class SpectrumAnalyzer(object):
 
         return peakIntensities
 
-    def _fitPeaksFamily(self, xRoi, yRoi, roiPeaks, roiLabel):
+    def _fitPeaksFamily(self, xRoi, yRoi, roiPeaks, roiLabel, no_background=False):
         parameters = Parameters()
 
         assert len(xRoi) > 0, roiLabel
         assert len(yRoi) > 0, roiLabel
 
-        aGuess, bGuess = self._computeLinearBackgroundGuess(xRoi, yRoi)
-        parameters.add('lb_a', value=aGuess, vary=True)
-        parameters.add('lb_b', value=bGuess, vary=True)
+        if not no_background:
+            aGuess, bGuess = self._computeLinearBackgroundGuess(xRoi, yRoi)
+            parameters.add('lb_a', value=aGuess, vary=True)
+            parameters.add('lb_b', value=bGuess, vary=True)
 
         roiMax = np.max(yRoi)
 
@@ -796,7 +798,10 @@ class SpectrumAnalyzer(object):
             return linearBackground(x)
 
         def functionModel(parameters, x):
-            model = functionBackground(parameters, x)
+            if not no_background:
+                model = functionBackground(parameters, x)
+            else:
+                model = None
 
             for peak_family_label in peak_family_list:
                 family_height = parameters[peak_family_label+"_height"]
@@ -813,7 +818,10 @@ class SpectrumAnalyzer(object):
                     sigma = self._detector.getSigma_keV(position_keV)
                     area = family_height*fraction*sigma*np.sqrt(2.0 * np.pi)
                     peakFunction = GaussianFunction(area=area, mu=mu, sigma=sigma);
-                    model += peakFunction(x)
+                    if model is not None:
+                        model += peakFunction(x)
+                    else:
+                        model = peakFunction(x)
 
             return model
 
@@ -852,8 +860,9 @@ class SpectrumAnalyzer(object):
         axScatter.plot(xRoi, yRoi, '.', label='Data')
         axScatter.plot(xFit, yFit, label='Fit')
 
-        yFitLB = functionBackground(result.params, xFit)
-        axScatter.plot(xFit, yFitLB, label='Fit LB')
+        if not no_background:
+            yFitLB = functionBackground(result.params, xFit)
+            axScatter.plot(xFit, yFitLB, label='Fit LB')
 
         for peak_family_label in peak_family_list:
             family_height = result.params[peak_family_label+"_height"]
@@ -917,7 +926,10 @@ class SpectrumAnalyzer(object):
                 area = family_height*fraction*sigma*np.sqrt(2.0 * np.pi)
                 yFitP = GaussianFunction(area=area, mu=mu, sigma=sigma_keV)(xFit);
 
-                yBackground = functionBackground(result.params, xFit)
+                if not no_background:
+                    yBackground = functionBackground(result.params, xFit)
+                else:
+                    yBackground = np.zeros_like(xFit)
 
                 peakIntensity = PeakIntensity(xFit, yFitP, yBackground, mu, sigma_keV, label)
                 peakIntensities.append(peakIntensity)
