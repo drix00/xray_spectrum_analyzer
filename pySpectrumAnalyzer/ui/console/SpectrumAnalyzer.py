@@ -727,8 +727,8 @@ class SpectrumAnalyzer(object):
         axHistx.locator_params(axis='y', tight=True, nbins=4)
 
         basefilepath, _extension = os.path.splitext(self._spectrumFilepath)
-        path, basename = os.path.split(basefilepath)
-        basefilepath = os.path.join(path, "Analyze", basename)
+        _path, basename = os.path.split(basefilepath)
+        basefilepath = os.path.join(self._outputPath, basename)
         roiFitFigureFilepath = basefilepath + '_' + roiLabel.replace(" ", '_')
         for extension in ['.png']:
             figure.savefig(roiFitFigureFilepath+extension)
@@ -896,8 +896,8 @@ class SpectrumAnalyzer(object):
         axHistx.locator_params(axis='y', tight=True, nbins=4)
 
         basefilepath, _extension = os.path.splitext(self._spectrumFilepath)
-        path, basename = os.path.split(basefilepath)
-        basefilepath = os.path.join(path, "Analyze", basename)
+        _path, basename = os.path.split(basefilepath)
+        basefilepath = os.path.join(self._outputPath, basename)
         roiFitFigureFilepath = basefilepath + '_' + roiLabel.replace(" ", '_')
         for extension in ['.png']:
             figure.savefig(roiFitFigureFilepath+extension)
@@ -952,7 +952,6 @@ class SpectrumAnalyzer(object):
         aGuess, bGuess = self._computeLinearBackgroundGuess(xRoi, yRoi)
         parameters.add('lb_a', value=aGuess, vary=True)
         parameters.add('lb_b', value=bGuess, vary=True)
-
 
         parameters.add('detector_Dn', value=40.0, min=0.0)
         parameters.add('detector_F', value=0.12, vary=False, min=0.0)
@@ -1072,8 +1071,8 @@ class SpectrumAnalyzer(object):
         axHistx.locator_params(axis='y', tight=True, nbins=4)
 
         basefilepath, _extension = os.path.splitext(self._spectrumFilepath)
-        path, basename = os.path.split(basefilepath)
-        basefilepath = os.path.join(path, "Analyze", basename)
+        _path, basename = os.path.split(basefilepath)
+        basefilepath = os.path.join(self._outputPath, basename)
         roiFitFigureFilepath = basefilepath + '_' + roiLabel.replace(" ", '_')
         for extension in ['.png']:
             figure.savefig(roiFitFigureFilepath+extension)
