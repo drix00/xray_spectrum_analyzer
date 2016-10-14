@@ -650,7 +650,7 @@ class SpectrumAnalyzer(object):
             key = "%s_%s" % (baseKey, "sigma")
             sigma = parameters[key].value
 
-            peakFunction = GaussianFunction(area=area, mu=mu, sigma=sigma);
+            peakFunction = GaussianFunction(area=area, mu=mu, sigma=sigma)
 
             return peakFunction(x)
 
@@ -817,7 +817,7 @@ class SpectrumAnalyzer(object):
                     mu = position_keV - delta_position
                     sigma = self._detector.getSigma_keV(position_keV)
                     area = family_height*fraction*sigma*np.sqrt(2.0 * np.pi)
-                    peakFunction = GaussianFunction(area=area, mu=mu, sigma=sigma);
+                    peakFunction = GaussianFunction(area=area, mu=mu, sigma=sigma)
                     if model is not None:
                         model += peakFunction(x)
                     else:
@@ -879,7 +879,7 @@ class SpectrumAnalyzer(object):
                 mu = position_keV - delta_position
                 sigma = self._detector.getSigma_keV(position_keV)
                 area = family_height*fraction*sigma*np.sqrt(2.0 * np.pi)
-                peakFunction = GaussianFunction(area=area, mu=mu, sigma=sigma);
+                peakFunction = GaussianFunction(area=area, mu=mu, sigma=sigma)
                 yFitP += peakFunction(xFit)
 
             axScatter.plot(xFit, yFitP, label='Fit %s' % (peak_family_label))
@@ -924,7 +924,7 @@ class SpectrumAnalyzer(object):
                 mu = position_keV - delta_position
                 sigma_keV = self._detector.getSigma_keV(position_keV)
                 area = family_height*fraction*sigma*np.sqrt(2.0 * np.pi)
-                yFitP = GaussianFunction(area=area, mu=mu, sigma=sigma_keV)(xFit);
+                yFitP = GaussianFunction(area=area, mu=mu, sigma=sigma_keV)(xFit)
 
                 if not no_background:
                     yBackground = functionBackground(result.params, xFit)
@@ -989,7 +989,7 @@ class SpectrumAnalyzer(object):
             detector = DetectorFunction(electronicNoise_eV, FanoFactor)
             sigma = detector.getSigma_keV(mu)
 
-            peakFunction = GaussianFunction(area=area, mu=mu, sigma=sigma);
+            peakFunction = GaussianFunction(area=area, mu=mu, sigma=sigma)
 
             return peakFunction(x)
 

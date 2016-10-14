@@ -120,7 +120,7 @@ class MainWindow(QtGui.QMainWindow):
         self.fileMenu.addAction(self.openAct)
         self.fileMenu.addAction(self.saveAct)
         self.fileMenu.addAction(self.saveAsAct)
-        self.fileMenu.addSeparator();
+        self.fileMenu.addSeparator()
         self.fileMenu.addAction(self.exitAct)
 
         self.menuBar().addSeparator()
@@ -371,12 +371,14 @@ class MainWindow(QtGui.QMainWindow):
 # TODO: Reference spectra
 # TODO: instrument parameters
 
+
 def createApplication():
     application = QtGui.QApplication(sys.argv)
     application.setApplicationName(APPLICATION_NAME)
     application.setOrganizationName(ORGANIZATION_NAME)
 
     return application
+
 
 def startLogging():
     dataLocation = QtGui.QDesktopServices.storageLocation(QtGui.QDesktopServices.DataLocation)
@@ -399,6 +401,7 @@ def startLogging():
     MODULE_LOGGER.debug("Temp location: %s", QtGui.QDesktopServices.storageLocation(QtGui.QDesktopServices.TempLocation))
     MODULE_LOGGER.debug("Cache location: %s", QtGui.QDesktopServices.storageLocation(QtGui.QDesktopServices.CacheLocation))
 
+
 def run():
     # Note application and mainWin have to be declared in the same method.
     application = createApplication()
@@ -408,6 +411,7 @@ def run():
     mainWindow.show()
 
     sys.exit(application.exec_())
+
 
 if __name__ == '__main__': #pragma: no cover
     run()

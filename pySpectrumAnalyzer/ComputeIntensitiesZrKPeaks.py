@@ -213,6 +213,7 @@ class ComputeIntensitiesZrKPeaks(object):
                 x.append(energy_keV)
                 y.append(intensity)
 
+        a = numpy.array(a)
         x = numpy.array(x)
         y = numpy.array(y)
 
