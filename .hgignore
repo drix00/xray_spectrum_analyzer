@@ -8,3 +8,4 @@ pySpectrumAnalyzer.egg-info/
 .eggs
 resource
 build
+.idea/workspace.xml
