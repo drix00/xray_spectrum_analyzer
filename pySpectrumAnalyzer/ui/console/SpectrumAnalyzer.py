@@ -50,6 +50,8 @@ FIT_METHOD_PEAK_FAMILY = "fitMethodPeakFamily"
 FIT_METHOD_ROI = "fitMethodRoi"
 FIT_METHOD_SPECTRUM = "fitMethodSpectrum"
 
+ROI_CARBON_DOUBLE_PEAKS = "Roi DC K"
+
 class PeakIntensity(object):
     _numericFactor = 2.0 * math.sqrt(2.0 * math.log(2.0))
 
@@ -608,9 +610,13 @@ class SpectrumAnalyzer(object):
         assert len(yRoi) > 0, roiLabel
 
         aGuess, bGuess = self._computeLinearBackgroundGuess(xRoi, yRoi)
-        parameters.add('lb_a', value=aGuess, vary=True)
-        parameters.add('lb_b', value=bGuess, vary=True)
-
+        if self.hasDoubleCarbonPeak and roiLabel == ROI_CARBON_DOUBLE_PEAKS:
+            parameters.add('lb_a', value=aGuess, vary=False)
+            parameters.add('lb_b', value=bGuess, vary=False)
+        else:
+            parameters.add('lb_a', value=aGuess, vary=True)
+            parameters.add('lb_b', value=bGuess, vary=True)
+            
         roiMax = np.max(yRoi)
 
         for position_keV, fraction, label in roiPeaks:
@@ -618,6 +624,8 @@ class SpectrumAnalyzer(object):
             key = "%s_%s" % (label.replace(' ', '_'), "sigma")
             if label == 'n':
                 parameters.add(key, value=sigmaGuess, min=0.0)
+            elif self.hasDoubleCarbonPeak and (label.startswith("C K") or label == "CD"):
+                parameters.add(key, value=sigmaGuess, min=sigmaGuess*0.9)
             else:
                 parameters.add(key, value=sigmaGuess, min=sigmaGuess*0.9, max=sigmaGuess*1.1)
 
