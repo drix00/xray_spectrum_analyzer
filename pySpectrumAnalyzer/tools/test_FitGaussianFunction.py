@@ -1,10 +1,5 @@
 #!/usr/bin/env python
-"""
-.. py:currentmodule:: console.test_FitLine
-.. moduleauthor:: Hendrix Demers <hendrix.demers@mail.mcgill.ca>
-
-Tests for module `FitLine`.
-"""
+""" """
 
 ###############################################################################
 # Copyright 2016 Hendrix Demers
@@ -31,61 +26,55 @@ import logging
 # Local modules.
 
 # Project modules
-import pySpectrumAnalyzer.ui.console.FitLine as FitLine
+import pySpectrumAnalyzer.tools.FitGaussianFunction as FitGaussianFunction
 
 # Globals and constants variables.
 
-class TestFitLine(unittest.TestCase):
-    """
-    TestCase class for the module `FitLine`.
-    """
+class TestFitGaussianFunction(unittest.TestCase):
 
     def setUp(self):
-        """
-        Setup method.
-        """
-
         unittest.TestCase.setUp(self)
 
     def tearDown(self):
-        """
-        Teardown method.
-        """
-
         unittest.TestCase.tearDown(self)
 
     def testSkeleton(self):
-        """
-        First test to check if the testcase is working with the testing framework.
-        """
-
         #self.fail("Test if the testcase is working.")
         self.assert_(True)
 
     def test_FitGaussianFunction(self):
-        function = FitLine.FitLineKa1Ka2()
-        self.assertEquals(5, function.getNumberFitParameters())
-
-        function = FitLine.FitLineKa1Ka2(areaKa1=1000)
-        self.assertEquals(4, function.getNumberFitParameters())
-
-        function = FitLine.FitLineKa1Ka2(areaKa1=1000, fractionKa2=0.5)
+        function = FitGaussianFunction.FitGaussianFunction()
         self.assertEquals(3, function.getNumberFitParameters())
 
-        function = FitLine.FitLineKa1Ka2(areaKa1=1000, fractionKa2=0.5, muKa1=1.2)
+        function = FitGaussianFunction.FitGaussianFunction(area=1000)
         self.assertEquals(2, function.getNumberFitParameters())
 
-        function = FitLine.FitLineKa1Ka2(areaKa1=1000, fractionKa2=0.5, muKa1=1.2, differenceKa2=0.001)
+        function = FitGaussianFunction.FitGaussianFunction(area=1000, mu=2.0)
         self.assertEquals(1, function.getNumberFitParameters())
 
-        function = FitLine.FitLineKa1Ka2(areaKa1=1000, fractionKa2=0.5, muKa1=1.2, differenceKa2=0.001, sigmaKa=0.050)
+        function = FitGaussianFunction.FitGaussianFunction(area=1000, mu=2.0, sigma=1.5)
+        self.assertEquals(0, function.getNumberFitParameters())
+
+        #self.fail("Test if the testcase is working.")
+
+    def test_FitGaussianWithYFunction(self):
+        function = FitGaussianFunction.FitGaussianWithYFunction()
+        self.assertEquals(4, function.getNumberFitParameters())
+
+        function = FitGaussianFunction.FitGaussianWithYFunction(area=1000)
+        self.assertEquals(3, function.getNumberFitParameters())
+
+        function = FitGaussianFunction.FitGaussianWithYFunction(area=1000, mu=2.0)
+        self.assertEquals(2, function.getNumberFitParameters())
+
+        function = FitGaussianFunction.FitGaussianWithYFunction(area=1000, mu=2.0, sigma=1.5)
+        self.assertEquals(1, function.getNumberFitParameters())
+
+        function = FitGaussianFunction.FitGaussianWithYFunction(area=1000, mu=2.0, sigma=1.5, y0=5.7)
         self.assertEquals(0, function.getNumberFitParameters())
 
         #self.fail("Test if the testcase is working.")
 
 if __name__ == '__main__':  #pragma: no cover
     import nose
-    import sys
-    argv = sys.argv
-    argv.append("--cover-package=pySpectrumAnalyzer.ui.console.FitLine")
-    nose.runmodule(argv=argv)
+    nose.runmodule()

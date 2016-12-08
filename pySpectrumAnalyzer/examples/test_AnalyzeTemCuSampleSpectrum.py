@@ -19,16 +19,15 @@
 
 # Standard library modules.
 import unittest
-import logging
+
 
 # Third party modules.
 
 # Local modules.
-import pySpectrumAnalyzer.ComputeIntensitiesZrKPeaks as ComputeIntensitiesZrKPeaks
 
 # Globals and constants variables.
 
-class TestComputeIntensitiesZrKPeaks(unittest.TestCase):
+class TestAnalyzeTemCuSampleSpectrum(unittest.TestCase):
 
     def setUp(self):
         unittest.TestCase.setUp(self)
@@ -38,11 +37,11 @@ class TestComputeIntensitiesZrKPeaks(unittest.TestCase):
 
     def testSkeleton(self):
         #self.fail("Test if the testcase is working.")
-        self.assertTrue(True)
+        self.assert_(True)
 
-if __name__ == '__main__': #pragma: no cover
+if __name__ == '__main__':    #pragma: no cover
     import nose
     import sys
     argv = sys.argv
-    argv.append("--cover-package=pySpectrumAnalyzer.ComputeIntensitiesZrKPeaks")
+    argv.append("--cover-package=pySpectrumAnalyzer.AnalyzeTemCuSampleSpectrum")
     nose.runmodule(argv=argv)

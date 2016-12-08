@@ -19,30 +19,29 @@
 
 # Standard library modules.
 import unittest
-import logging
+
 
 # Third party modules.
 
 # Local modules.
-import pySpectrumAnalyzer.AnalyzeTemCuSampleSpectrum as AnalyzeTemCuSampleSpectrum
 
 # Globals and constants variables.
 
-class TestAnalyzeTemCuSampleSpectrum(unittest.TestCase):
+class TestAnalyzeSpectrumEDSCRM(unittest.TestCase):
 
-    def setUp(self):
-        unittest.TestCase.setUp(self)
+        def setUp(self):
+                unittest.TestCase.setUp(self)
 
-    def tearDown(self):
-        unittest.TestCase.tearDown(self)
+        def tearDown(self):
+                unittest.TestCase.tearDown(self)
 
-    def testSkeleton(self):
-        #self.fail("Test if the testcase is working.")
-        self.assert_(True)
+        def testSkeleton(self):
+                #self.fail("Test if the testcase is working.")
+                self.assert_(True)
 
-if __name__ == '__main__':    #pragma: no cover
+if __name__ == '__main__': #pragma: no cover
     import nose
     import sys
     argv = sys.argv
-    argv.append("--cover-package=pySpectrumAnalyzer.AnalyzeTemCuSampleSpectrum")
+    argv.append("--cover-package=pySpectrumAnalyzer.AnalyzeSpectrumEDSCRM")
     nose.runmodule(argv=argv)

@@ -40,7 +40,7 @@ from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT as Navigatio
 from matplotlib.figure import Figure
 
 # Local modules.
-import pyHendrixDemersTools.Files as Files
+from pySpectrumAnalyzer import getCurrentModulePath
 import pySpectrumAnalyzer.ui.console.SpectrumAnalyzer as SpectrumAnalyzer
 
 # Project modules

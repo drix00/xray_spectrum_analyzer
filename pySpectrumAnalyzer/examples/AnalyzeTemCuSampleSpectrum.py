@@ -27,7 +27,7 @@ import numpy as np
 # Local modules.
 import pyHendrixDemersTools.Files as Files
 import pyHendrixDemersTools.Graphics as Graphics
-import pydtsadata.XRayTransitionData as XRayTransitionData
+import pySpectrumAnalyzer.tools.XRayTransitionData as XRayTransitionData
 
 import pySpectrumFileFormat.Edax.TemCsvFile as TemCsvFile
 

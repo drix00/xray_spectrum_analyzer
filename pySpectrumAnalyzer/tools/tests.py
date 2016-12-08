@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 """
-.. py:currentmodule:: pySpectrumAnalyzer.test_xrayGenerator
+.. py:currentmodule:: ui.tests
 .. moduleauthor:: Hendrix Demers <hendrix.demers@mail.mcgill.ca>
 
-Tests for the module `xrayGenerator`.
+Regression testing for the project.
 """
 
 ###############################################################################
@@ -23,48 +23,18 @@ Tests for the module `xrayGenerator`.
 ###############################################################################
 
 # Standard library modules.
-import unittest
-import logging
 
 # Third party modules.
 
 # Local modules.
 
 # Project modules
-from pySpectrumAnalyzer.xrayGenerator import XrayGenerator
 
 # Globals and constants variables.
 
-class TestxrayGenerator(unittest.TestCase):
-    """
-    TestCase class for the module `xrayGenerator`.
-    """
-
-    def setUp(self):
-        """
-        Setup method.
-        """
-
-        unittest.TestCase.setUp(self)
-
-    def tearDown(self):
-        """
-        Teardown method.
-        """
-
-        unittest.TestCase.tearDown(self)
-
-    def testSkeleton(self):
-        """
-        First test to check if the testcase is working with the testing framework.
-        """
-
-        #self.fail("Test if the testcase is working.")
-        self.assert_(True)
-
-if __name__ == '__main__':  #pragma: no cover
+if __name__ == "__main__": #pragma: no cover
     import nose
     import sys
     argv = sys.argv
-    argv.append("--cover-package=pySpectrumAnalyzer.xrayGenerator")
-    nose.runmodule(argv=argv)
+    argv.append("--cover-package=pySpectrumAnalyzer.ui")
+    nose.main(argv=argv)

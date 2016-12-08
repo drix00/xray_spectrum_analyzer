@@ -18,15 +18,12 @@
 ###############################################################################
 
 # Standard library modules.
-import os.path
 import logging
+import os.path
 
-# Third party modules.
-
-# Local modules.
 import pyHendrixDemersTools.Files as Files
 
-import pySpectrumAnalyzer.ComputePeaksIntensities as ComputePeaksIntensities
+import pySpectrumAnalyzer.examples.ComputePeaksIntensities as ComputePeaksIntensities
 
 # Globals and constants variables.
 CKA = "C Ka"

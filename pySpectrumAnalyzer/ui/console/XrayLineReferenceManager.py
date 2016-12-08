@@ -27,8 +27,8 @@ X-ray lines reference manager
 # Third party modules.
 
 # Local modules.
-import pydtsadata.XRayTransitionData as XRayTransitionData
-import pySpecimenTools.ElementProperties as ElementProperties
+import pySpectrumAnalyzer.tools.XRayTransitionData as XRayTransitionData
+import pySpectrumAnalyzer.tools.ElementProperties as ElementProperties
 
 # Project modules
 
@@ -150,7 +150,3 @@ class XrayLineReferenceManager(object):
                     escapePeaks.append((position_keV, label))
 
         return escapePeaks
-
-if __name__ == '__main__': #pragma: no cover
-    import pyHendrixDemersTools.Runner as Runner
-    Runner.Runner().run(runFunction=None)

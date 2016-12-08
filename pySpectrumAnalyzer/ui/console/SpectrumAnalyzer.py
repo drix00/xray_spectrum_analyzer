@@ -43,10 +43,11 @@ import pySpectrumFileFormat.emmff.emsa as emsa
 import pySpectrumFileFormat.emmff.emsaFormat as emsaFormat
 import pySpectrumFileFormat.Bruker.ExportedCsvFile as ExportedCsvFile
 
-import pyHendrixDemersTools.Files as Files
-import pyHendrixDemersTools.Graphics as Graphics
-from pyFitTools.FitPolynomialFunction import PolynomialFirstDegreeFunction
-from pyFitTools.FitGaussianFunction import GaussianFunction
+from pySpectrumAnalyzer import getCurrentModulePath, createPath
+from pySpectrumAnalyzer import saveFigureData
+
+from pySpectrumAnalyzer.tools.FitPolynomialFunction import PolynomialFirstDegreeFunction
+from pySpectrumAnalyzer.tools.FitGaussianFunction import GaussianFunction
 
 # Project modules
 import pySpectrumAnalyzer.ui.console.XrayLineReferenceManager as XrayLineReferenceManager
@@ -216,7 +217,7 @@ class Roi(object):
 class SpectrumAnalyzer(object):
     def __init__(self, outputPath=None, configurationFilepath=None, keepGraphic=True):
         if outputPath is not None:
-            self._outputPath = Files.createPath(outputPath)
+            self._outputPath = createPath(outputPath)
 
         self._configurationFilepath = configurationFilepath
         self._keepGraphic = keepGraphic
@@ -751,7 +752,7 @@ class SpectrumAnalyzer(object):
             figure.savefig(roiFitFigureFilepath+extension)
 
         if self.exportRois:
-            Graphics.saveFigureData(roiFitFigureFilepath+".csv")
+            saveFigureData(roiFitFigureFilepath+".csv")
 
         plt.clf()
         plt.close()
@@ -920,7 +921,7 @@ class SpectrumAnalyzer(object):
             figure.savefig(roiFitFigureFilepath+extension)
 
         if self.exportRois:
-            Graphics.saveFigureData(roiFitFigureFilepath+".csv")
+            saveFigureData(roiFitFigureFilepath+".csv")
 
         plt.clf()
         plt.close()
@@ -1217,7 +1218,7 @@ def showGraphics():
     plt.show()
 
 def run():
-    currentPath = Files.getCurrentModulePath(__file__)
+    currentPath = getCurrentModulePath(__file__)
     configurationFilepath = os.path.join(currentPath, "../SpectrumAnalyzer.cfg")
 
     outputPath = os.path.join(currentPath, "../testData/tmp/RareEarth_20120307_SiO2")
@@ -1235,5 +1236,4 @@ def run():
     spectrumAnalyzer.showGraphic()
 
 if __name__ == '__main__': #pragma: no cover
-    import pyHendrixDemersTools.Runner as Runner
-    Runner.Runner().run(runFunction=run)
+    run()

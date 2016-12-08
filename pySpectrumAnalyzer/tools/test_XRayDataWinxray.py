@@ -19,16 +19,15 @@
 
 # Standard library modules.
 import unittest
-import logging
 
 # Third party modules.
 
 # Local modules.
-import pySpectrumAnalyzer.ComputePeaksIntensities as ComputePeaksIntensities
+import pySpectrumAnalyzer.tools.XRayDataWinxray as XRayDataWinxray
 
 # Globals and constants variables.
 
-class TestComputePeaksIntensities(unittest.TestCase):
+class TestXRayDataWinxray(unittest.TestCase):
 
     def setUp(self):
         unittest.TestCase.setUp(self)
@@ -37,12 +36,21 @@ class TestComputePeaksIntensities(unittest.TestCase):
         unittest.TestCase.tearDown(self)
 
     def testSkeleton(self):
-        #self.fail("Test if the testcase is working.")
-        self.assert_(True)
+        #self.fail("Test if the TestCase is working.")
+        self.assertTrue(True)
+
+    def testGetXRayEnergy_eV(self):
+        self.assertAlmostEquals(282.0, XRayDataWinxray.getXRayEnergy_eV(6, 'Ka1'))
+
+        #self.fail("Test if the TestCase is working.")
+        self.assertTrue(True)
+
+    def testGetIonizationEnergy_eV(self):
+        self.assertAlmostEquals(283.0, XRayDataWinxray.getIonizationEnergy_eV(6, 'K'))
+
+        #self.fail("Test if the TestCase is working.")
+        self.assertTrue(True)
 
 if __name__ == '__main__': #pragma: no cover
     import nose
-    import sys
-    argv = sys.argv
-    argv.append("--cover-package=pySpectrumAnalyzer.ComputePeaksIntensities")
-    nose.runmodule(argv=argv)
+    nose.runmodule()

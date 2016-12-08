@@ -18,20 +18,30 @@
 ###############################################################################
 
 # Standard library modules.
+import unittest
+
 
 # Third party modules.
 
 # Local modules.
 
 # Globals and constants variables.
-UI_TK = "Tk"
 
-class Options(object):
-        def __init__(self, args=None, configurationFile=None):
-                # TODO: Allow configurationFile to be either a filename string or a list of filename string.
+class TestComputeIntensitiesZrKPeaks(unittest.TestCase):
 
-                # Set default options.
-                self._ui = UI_TK
+    def setUp(self):
+        unittest.TestCase.setUp(self)
 
-        def getUI(self):
-                return self._ui
+    def tearDown(self):
+        unittest.TestCase.tearDown(self)
+
+    def testSkeleton(self):
+        #self.fail("Test if the testcase is working.")
+        self.assertTrue(True)
+
+if __name__ == '__main__': #pragma: no cover
+    import nose
+    import sys
+    argv = sys.argv
+    argv.append("--cover-package=pySpectrumAnalyzer.ComputeIntensitiesZrKPeaks")
+    nose.runmodule(argv=argv)

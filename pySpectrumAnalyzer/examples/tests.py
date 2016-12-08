@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-""" """
+"""Regression testing for the project."""
 
 ###############################################################################
 # Copyright 2016 Hendrix Demers
@@ -18,31 +18,16 @@
 ###############################################################################
 
 # Standard library modules.
-import unittest
-import logging
 
 # Third party modules.
 
 # Local modules.
-import pySpectrumAnalyzer.AnalyzeSpectrumEDSCRM as AnalyzeSpectrumEDSCRM
 
 # Globals and constants variables.
 
-class TestAnalyzeSpectrumEDSCRM(unittest.TestCase):
-
-        def setUp(self):
-                unittest.TestCase.setUp(self)
-
-        def tearDown(self):
-                unittest.TestCase.tearDown(self)
-
-        def testSkeleton(self):
-                #self.fail("Test if the testcase is working.")
-                self.assert_(True)
-
-if __name__ == '__main__': #pragma: no cover
+if __name__ == "__main__":
     import nose
     import sys
     argv = sys.argv
-    argv.append("--cover-package=pySpectrumAnalyzer.AnalyzeSpectrumEDSCRM")
-    nose.runmodule(argv=argv)
+    argv.append("--cover-package=pySpectrumAnalyzer")
+    nose.main(argv=argv)
