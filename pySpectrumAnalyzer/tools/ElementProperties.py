@@ -321,7 +321,7 @@ def getKRatioCorrection(atomicNumber):
      *
      * @param[in] atomicNumber Atomic number.
     """
-    Value = 0.734*math.pow(atomicNumber, 0.037);
+    Value = 0.734*math.pow(atomicNumber, 0.037)
 
     return Value
 
@@ -452,8 +452,6 @@ if __name__ == '__main__': #pragma: no cover
     import sys
     import os.path
     import csv
-
-    import numpy as np
 
     #runAtomicNumberSymbol()
 

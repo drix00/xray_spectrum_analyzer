@@ -40,7 +40,7 @@ from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT as Navigatio
 from matplotlib.figure import Figure
 
 # Local modules.
-from pySpectrumAnalyzer import getCurrentModulePath
+from pySpectrumAnalyzer import get_current_module_path
 import pySpectrumAnalyzer.ui.console.SpectrumAnalyzer as SpectrumAnalyzer
 
 # Project modules
@@ -67,7 +67,7 @@ class MainWindow(QtGui.QMainWindow):
         print(QtGui.QIcon.fromTheme('document-save').isNull())
         self.create_gui()
 
-        currentPath = Files.getCurrentModulePath(__file__)
+        currentPath = get_current_module_path(__file__)
         configurationFilepath = os.path.join(currentPath, "../../../SpectrumAnalyzer.cfg")
 
         self.spectrumAnalyzer = SpectrumAnalyzer.SpectrumAnalyzer(configurationFilepath=configurationFilepath, keepGraphic=False)

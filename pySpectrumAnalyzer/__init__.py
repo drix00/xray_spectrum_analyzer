@@ -52,7 +52,7 @@ def createPath(path):
     return path
 
 
-def getCurrentModulePath(modulePath, relativePath=""):
+def get_current_module_path(modulePath, relativePath=""):
     basepath = os.path.dirname(modulePath)
     #logging.debug(basepath)
 

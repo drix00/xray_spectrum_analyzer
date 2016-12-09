@@ -1,23 +1,23 @@
 #!/usr/bin/env python
 """ """
 
-# Script information for the file.
-__author__ = "Hendrix Demers (hendrix.demers@mail.mcgill.ca)"
-__version__ = ""
-__date__ = ""
-__copyright__ = "Copyright (c) 2007 Hendrix Demers"
-__license__ = ""
-
-# Subversion informations for the file.
-__svnRevision__ = "$Revision: 2940 $"
-__svnDate__ = "$Date: 2014-11-26 19:25:19 -0500 (Wed, 26 Nov 2014) $"
-__svnId__ = "$Id: XRayTransitionData.py 2940 2014-11-27 00:25:19Z hdemers $"
+###############################################################################
+# Copyright 2016 Hendrix Demers
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+###############################################################################
 
 # Standard library modules.
-try:
-    from configparser import SafeConfigParser
-except ImportError:
-    from ConfigParser import SafeConfigParser
 import os.path
 import warnings
 import csv
@@ -27,63 +27,32 @@ import csv
 # Local modules.
 import pywinxraydata.XRayDataWinxray as XRayDataWinxray
 import pywinxraydata.ElementProperties as ElementProperties
+from pySpectrumAnalyzer import get_current_module_path
 
 # Globals and constants variables.
 
 class XRayTransitionData(object):
-#    def __init__(self
-#                             , basename="XrayData"
-#                             , _pathname='../../../data/DTSA/'
-#                             , lineSuffix='Line'
-#                             , edgeSuffix='Edge'
-#                             , extension=".csv"
-#                             , configurationFile=None
-#                             ):
-    def __init__(self, configurationFile):
-        self.readConfiguration(configurationFile)
+    def __init__(self):
 
-        self.lineFilename = self.basename + self.lineSuffix + self.extension
+        self.lineFilename = "XrayDataLine.csv"
 
-        self.edgeFilename = self.basename + self.edgeSuffix + self.extension
+        self.edgeFilename = "XrayDataEdge.csv"
 
         self.readFiles()
 
         self.restrictedXRayLines = ['Ka1', 'Ka2', 'Kb1', 'Kb3'
-                                                                , 'La1', 'La2', 'Lb2', 'Ll'
-                                                                , 'Lb1', 'Le'
-                                                                , 'Ma1', 'Mz1'
-                                                                , 'Mb1', 'Mz2']
+            , 'La1', 'La2', 'Lb2', 'Ll'
+            , 'Lb1', 'Le'
+            , 'Ma1', 'Mz1'
+            , 'Mb1', 'Mz2']
 
         self.restrictedXRayLines2 = ['Ka1', 'Ka2', 'Kb1', 'Kb3'
-                                                                , 'La1', 'La2', 'Lb2', 'Lb5', 'Lb15', 'Ll'
-                                                                , 'Lb1', 'Lg1', 'Le'
-                                                                , 'Lb3', 'Lb4', 'Lg2', 'Lg3'
-                                                                , 'Ma1', 'Ma2', 'Mz1'
-                                                                , 'Mb1', 'Mz2', 'Mg1'
-                                                                , 'Md']
-
-    def readConfiguration(self, configurationFile):
-        """ Read the configuration file for options."""
-        # pylint: disable-msg=W0201
-        config = SafeConfigParser()
-
-        config.readfp(open(configurationFile))
-
-        if config.has_section("DTSAXRayTransitionData"):
-            if config.has_option("DTSAXRayTransitionData", "pathname"):
-                self._pathname = config.get("DTSAXRayTransitionData", "pathname")
-
-            if config.has_option("DTSAXRayTransitionData", "basename"):
-                self.basename = config.get("DTSAXRayTransitionData", "basename")
-
-            if config.has_option("DTSAXRayTransitionData", "extension"):
-                self.extension = config.get("DTSAXRayTransitionData", "extension")
-
-            if config.has_option("DTSAXRayTransitionData", "lineSuffix"):
-                self.lineSuffix = config.get("DTSAXRayTransitionData", "lineSuffix")
-
-            if config.has_option("DTSAXRayTransitionData", "edgeSuffix"):
-                self.edgeSuffix = config.get("DTSAXRayTransitionData", "edgeSuffix")
+            , 'La1', 'La2', 'Lb2', 'Lb5', 'Lb15', 'Ll'
+            , 'Lb1', 'Lg1', 'Le'
+            , 'Lb3', 'Lb4', 'Lg2', 'Lg3'
+            , 'Ma1', 'Ma2', 'Mz1'
+            , 'Mb1', 'Mz2', 'Mg1'
+            , 'Md']
 
     def readLineFile(self, filename):
         # pylint: disable-msg=W0201
@@ -162,28 +131,12 @@ class XRayTransitionData(object):
                 print(row)
 
     def readFiles(self):
-        if self.checkFiles():
-            completeFilename = os.path.join(self._pathname, self.lineFilename)
-            self.readLineFile(completeFilename)
+        data_path = get_current_module_path(__file__, "../../data/")
+        completeFilename = os.path.join(data_path, self.lineFilename)
+        self.readLineFile(completeFilename)
 
-            completeFilename = os.path.join(self._pathname, self.edgeFilename)
-            self.readEdgeFile(completeFilename)
-
-    def checkFiles(self):
-
-        completeFilename = os.path.join(self._pathname, self.lineFilename)
-        if not os.path.exists(completeFilename):
-            warnings.warn("Cannot find line x-ray data file: %s" % completeFilename)
-
-            return False
-
-        completeFilename = os.path.join(self._pathname, self.edgeFilename)
-        if not os.path.exists(completeFilename):
-            warnings.warn("Cannot find edge x-ray data file: %s" % completeFilename)
-
-            return False
-
-        return True
+        completeFilename = os.path.join(data_path, self.edgeFilename)
+        self.readEdgeFile(completeFilename)
 
     def getAtomicNumber(self, dataType='both'):
         if dataType == 'both':
@@ -428,7 +381,7 @@ class XRayTransitionData(object):
         for transition in transitions:
             if self.extractSubshellKey(transition) == subshell.upper():
                 transitionEnergy_eV = self.getTransitionEnergy_eV(element=atomicNumber
-                                                                                                                    , transitionName=transition)
+                                                                  , transitionName=transition)
                 transtitionsEnergies_eV.setdefault(transition, transitionEnergy_eV)
 
         return transtitionsEnergies_eV

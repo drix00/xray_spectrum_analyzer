@@ -43,7 +43,7 @@ import pySpectrumFileFormat.emmff.emsa as emsa
 import pySpectrumFileFormat.emmff.emsaFormat as emsaFormat
 import pySpectrumFileFormat.Bruker.ExportedCsvFile as ExportedCsvFile
 
-from pySpectrumAnalyzer import getCurrentModulePath, createPath
+from pySpectrumAnalyzer import get_current_module_path, createPath
 from pySpectrumAnalyzer import saveFigureData
 
 from pySpectrumAnalyzer.tools.FitPolynomialFunction import PolynomialFirstDegreeFunction
@@ -1218,7 +1218,7 @@ def showGraphics():
     plt.show()
 
 def run():
-    currentPath = getCurrentModulePath(__file__)
+    currentPath = get_current_module_path(__file__)
     configurationFilepath = os.path.join(currentPath, "../SpectrumAnalyzer.cfg")
 
     outputPath = os.path.join(currentPath, "../testData/tmp/RareEarth_20120307_SiO2")
