@@ -27,3 +27,5 @@
 *.exe
 *.out
 *.app
+# Project files
+commit_message.txt
