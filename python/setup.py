@@ -26,7 +26,7 @@ from setuptools import setup, find_packages
 
 # Globals and constants variables.
 
-readme_file_path = os.path.join(os.path.dirname(__file__), 'README.rst')
+readme_file_path = os.path.join(os.path.dirname(__file__), '../README.md')
 long_description = open(readme_file_path).read() + '\n\n'
 
 setup(name="X-ray Spectrum Analyzer",

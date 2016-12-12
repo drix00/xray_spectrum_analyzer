@@ -27,5 +27,10 @@
 *.exe
 *.out
 *.app
+
 # Project files
 commit_message.txt
+
+# Python files
+.eggs/
+*.egg-info/
