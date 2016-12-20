@@ -36,9 +36,8 @@ import pySpectrumAnalyzer.tools.ElementProperties as ElementProperties
 FRACTION_MINOR_MAJOR = 0.05
 
 class XrayLineReferenceManager(object):
-    def __init__(self, configurationFilepath):
-        self._configurationFilepath = configurationFilepath
-        self._xrayData = XRayTransitionData.XRayTransitionData(self._configurationFilepath)
+    def __init__(self):
+        self._xrayData = XRayTransitionData.XRayTransitionData()
         self._xrayData.readFiles()
 
         self._elementSymbols = []

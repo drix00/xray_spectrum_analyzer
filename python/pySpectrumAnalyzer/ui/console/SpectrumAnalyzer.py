@@ -222,7 +222,7 @@ class SpectrumAnalyzer(object):
         self._configurationFilepath = configurationFilepath
         self._keepGraphic = keepGraphic
 
-        self._lineRefManager = XrayLineReferenceManager.XrayLineReferenceManager(self._configurationFilepath)
+        self._lineRefManager = XrayLineReferenceManager.XrayLineReferenceManager()
 
         self.showEdgeMarkers = False
         self.showMajorLineMarkers = True
@@ -637,7 +637,7 @@ class SpectrumAnalyzer(object):
             elif self.hasDoubleCarbonPeak and (label.startswith("C K") or label == "CD"):
                 parameters.add(key, value=sigmaGuess, min=sigmaGuess*0.9)
             else:
-                parameters.add(key, value=sigmaGuess, min=sigmaGuess*0.9, max=sigmaGuess*1.1)
+                parameters.add(key, value=sigmaGuess, min=sigmaGuess*0.8, max=sigmaGuess*1.2)
 
             areaGuess = roiMax*fraction*sigmaGuess*np.sqrt(2.0 * np.pi)
             key = "%s_%s" % (label.replace(' ', '_'), "area")

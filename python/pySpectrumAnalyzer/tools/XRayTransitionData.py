@@ -131,7 +131,7 @@ class XRayTransitionData(object):
                 print(row)
 
     def readFiles(self):
-        data_path = get_current_module_path(__file__, "../../data/")
+        data_path = get_current_module_path(__file__, "../../../data/")
         completeFilename = os.path.join(data_path, self.lineFilename)
         self.readLineFile(completeFilename)
 
