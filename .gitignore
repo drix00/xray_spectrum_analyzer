@@ -35,3 +35,5 @@ commit_message.txt
 .eggs/
 *.egg-info/
 __pycache__
+.idea
+cmake-build*
