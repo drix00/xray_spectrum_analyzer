@@ -1,1 +1,2 @@
 *.p11 filter=lfs diff=lfs merge=lfs -text
+*.dat filter=lfs diff=lfs merge=lfs -text
