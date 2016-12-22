@@ -29,7 +29,6 @@
 // Library headers
 #include <boost/filesystem.hpp>
 #include <boost/algorithm/string.hpp>
-#include <boost/lexical_cast.hpp>
 // Precompiled header
 #pragma hdrstop
 // Current declaration header file of this implementation file.
@@ -38,6 +37,7 @@
 #include "XrayTransition.h"
 #include "Subshell.h"
 // Project private headers
+#include "tools/tools_io.h"
 
 // Global and constant variables/functions.
 
@@ -183,22 +183,6 @@ void AtomicTransitions::readData()
 
     inputFile.close();
     computeXrayLineFraction();
-}
-
-double AtomicTransitions::extractDoubleValueFromString(std::string &itemStr)
-{
-    boost::trim(itemStr);
-    const std::string stringValue = itemStr;
-    const double value = boost::lexical_cast<double>(stringValue);
-    return value;
-}
-
-int AtomicTransitions::extractIntegerValueFromString(std::string &itemStr)
-{
-    boost::trim(itemStr);
-    const std::string stringValue = itemStr;
-    const int value = boost::lexical_cast<int>(stringValue);
-    return value;
 }
 
 void AtomicTransitions::computeXrayLineFraction()

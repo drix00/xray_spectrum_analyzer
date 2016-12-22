@@ -1,10 +1,10 @@
-#ifndef X_RAY_SPECTRUM_ANALYZER_ATOMICTRANSITIONS_H
-#define X_RAY_SPECTRUM_ANALYZER_ATOMICTRANSITIONS_H
+#ifndef X_RAY_SPECTRUM_ANALYZER_PENEPMAINTENSITIES_H
+#define X_RAY_SPECTRUM_ANALYZER_PENEPMAINTENSITIES_H
 
 /**
  * @file
  *
- * @brief Atomic transitions data.
+ * @brief Read penepma intensities file.
  *
  * @author Hendrix Demers <hendrix.demers@mail.mcgill.ca>
  * @since 1.0
@@ -30,31 +30,30 @@
 #include <vector>
 #include <unordered_map>
 // Library headers
+#include <boost/filesystem.hpp>
 // Project headers
-#include "XrayTransition.h"
-#include "AugerTransition.h"
 #include "Subshell.h"
 // Project private headers
+#include "penepma/PenepmaIntensity.h"
 
-class AtomicTransitions {
+using XrayIntensities = std::vector<PenepmaIntensity>;
+
+class PenepmaIntensities {
 public:
-    AtomicTransitions();
-    ~AtomicTransitions();
+    PenepmaIntensities(const boost::filesystem::path &filepath);
+    ~PenepmaIntensities();
 
-    XrayTransition getXrayTransition(const int atomicNumber, const Subshell initial, const Subshell final);
-    std::vector<XrayTransition> getXrayTransitions(const int atomicNumber, const Subshell initial);
-    std::vector<XrayTransition> getXrayTransitions(const int atomicNumber);
+    PenepmaIntensity getXrayIntensity(const int atomicNumber, const Subshell initial, const Subshell final);
+    XrayIntensities getXrayIntensity(const int atomicNumber, const Subshell initial);
+    XrayIntensities getXrayIntensity(const int atomicNumber);
 
 private:
     void readData();
-    void computeXrayLineFraction();
 
 private:
-    using XrayTransitions = std::vector<XrayTransition>;
-    using AugerTransitions = std::vector<AugerTransition>;
+    boost::filesystem::path dataFilepath;
 
-    std::unordered_map<int, XrayTransitions> atomicXrayTransitions;
-    std::unordered_map<int, AugerTransitions> atomicAugerTransitions;
+    std::unordered_map<int, XrayIntensities> xrayIntensities;
 };
 
-#endif //X_RAY_SPECTRUM_ANALYZER_ATOMICTRANSITIONS_H
+#endif //X_RAY_SPECTRUM_ANALYZER_PENEPMAINTENSITIES_H

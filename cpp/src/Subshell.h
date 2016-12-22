@@ -62,7 +62,17 @@ enum class Subshell
  * @param[in] subshell_number
  * @return a subshell
  */
-Subshell convert(int subshell_number);
+Subshell convert(const int subshell_number);
+
+/**
+ * @brief Convert a string to the corresponding Subshell.
+ *
+ * @since 1.0
+ *
+ * @param[in] subshell_number
+ * @return a subshell
+ */
+Subshell convert(const std::string &subshell_str);
 
 /**
  * @brief Convert a Subshell into it string representation.

@@ -34,9 +34,43 @@
 
 // Global and constant variables/functions.
 
-Subshell convert(int subshell_number)
+Subshell convert(const int subshell_number)
 {
     return static_cast<Subshell>(subshell_number);
+}
+
+Subshell convert(const std::string &subshell_str)
+{
+        if ( subshell_str == "K") return Subshell::K;
+        if ( subshell_str == "L1") return Subshell::L1;
+        if ( subshell_str == "L2") return Subshell::L2;
+        if ( subshell_str == "L3") return Subshell::L3;
+        if ( subshell_str == "M1") return Subshell::M1;
+        if ( subshell_str == "M2") return Subshell::M2;
+        if ( subshell_str == "M3") return Subshell::M3;
+        if ( subshell_str == "M4") return Subshell::M4;
+        if ( subshell_str == "M5") return Subshell::M5;
+        if ( subshell_str == "N1") return Subshell::N1;
+        if ( subshell_str == "N2") return Subshell::N2;
+        if ( subshell_str == "N3") return Subshell::N3;
+        if ( subshell_str == "N4") return Subshell::N4;
+        if ( subshell_str == "N5") return Subshell::N5;
+        if ( subshell_str == "N6") return Subshell::N6;
+        if ( subshell_str == "N7") return Subshell::N7;
+        if ( subshell_str == "O1") return Subshell::O1;
+        if ( subshell_str == "O2") return Subshell::O2;
+        if ( subshell_str == "O3") return Subshell::O3;
+        if ( subshell_str == "O4") return Subshell::O4;
+        if ( subshell_str == "O5") return Subshell::O5;
+        if ( subshell_str == "O6") return Subshell::O6;
+        if ( subshell_str == "O7") return Subshell::O7;
+        if ( subshell_str == "P1") return Subshell::P1;
+        if ( subshell_str == "P2") return Subshell::P2;
+        if ( subshell_str == "P3") return Subshell::P3;
+        if ( subshell_str == "P4") return Subshell::P4;
+        if ( subshell_str == "P5") return Subshell::P5;
+        if ( subshell_str == "Q1") return Subshell::Q1;
+        if ( subshell_str == "Outer") return Subshell::OUTER;
 }
 
 std::string label(const Subshell subshell)
