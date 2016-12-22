@@ -30,6 +30,7 @@
 
 # Project files
 commit_message.txt
+cpp/ext/*
 
 # Python files
 .eggs/
