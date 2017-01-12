@@ -146,8 +146,8 @@ BOOST_AUTO_TEST_CASE(test_is_working)
             // Now let's use the solve_least_squares_lm() routine to figure out what the
             // parameters are based on just the data_samples.
             parameter_vector x;
-            x = 1;
 
+            x = 1;
             // Use the Levenberg-Marquardt method to determine the parameters which
             // minimize the sum of all squared residuals.
             solve_least_squares_lm(objective_delta_stop_strategy(1e-7),
@@ -161,6 +161,21 @@ BOOST_AUTO_TEST_CASE(test_is_working)
             BOOST_CHECK_CLOSE(params(1, 0), x(1, 0), tolerance);
             BOOST_CHECK_CLOSE(params(2, 0), x(2, 0), tolerance);
             BOOST_CHECK_SMALL(length(x - params), 3.0e-15);
+
+            x = 1;
+            // Use the Levenberg-Marquardt method to determine the parameters which
+            // minimize the sum of all squared residuals.
+            solve_least_squares_lm(objective_delta_stop_strategy(1e-7),
+                                   residual,
+                                   derivative(residual),
+                                   data_samples,
+                                   x);
+
+            // Now x contains the solution.  If everything worked it will be equal to params.
+            BOOST_CHECK_CLOSE(params(0, 0), x(0, 0), tolerance);
+            BOOST_CHECK_CLOSE(params(1, 0), x(1, 0), tolerance);
+            BOOST_CHECK_CLOSE(params(2, 0), x(2, 0), tolerance);
+            BOOST_CHECK_SMALL(length(x - params), 5.0e-15);
 
             x = 1;
             // If we didn't create the residual_derivative function then we could
