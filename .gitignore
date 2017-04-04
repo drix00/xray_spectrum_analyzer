@@ -38,3 +38,6 @@ cpp/ext/*
 __pycache__
 .idea
 cmake-build*
+
+# Visual studio files
+.vs/
