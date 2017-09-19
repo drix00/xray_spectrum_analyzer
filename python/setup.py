@@ -29,8 +29,8 @@ from setuptools import setup, find_packages
 readme_file_path = os.path.join(os.path.dirname(__file__), '../README.md')
 long_description = open(readme_file_path).read() + '\n\n'
 
-setup(name="X-ray Spectrum Analyzer",
-      version='0.1',
+setup(name="xrayspectrumanalyzer",
+      version='0.2',
       url='',
       description="Extract peak intensity from EDS spectrum obtained with a EM.",
       long_description=long_description,

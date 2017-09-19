@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-.. py:currentmodule:: pySpectrumAnalyzer.ui.console.test_XrayLineReferenceManager
+.. py:currentmodule:: xrayspectrumanalyzer.ui.console.test_XrayLineReferenceManager
 .. moduleauthor:: Hendrix Demers <hendrix.demers@mail.mcgill.ca>
 
 Tests for the module `XrayLineReferenceManager`.
@@ -66,5 +66,5 @@ if __name__ == '__main__':  #pragma: no cover
     import nose
     import sys
     argv = sys.argv
-    argv.append("--cover-package=pySpectrumAnalyzer.ui.console.XrayLineReferenceManager")
+    argv.append("--cover-package=xrayspectrumanalyzer.ui.console.XrayLineReferenceManager")
     nose.runmodule(argv=argv)

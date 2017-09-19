@@ -47,7 +47,7 @@ import pySpectrumAnalyzer.ui.console.SpectrumAnalyzer as SpectrumAnalyzer
 
 # Globals and constants variables.
 
-APPLICATION_NAME = "pySpectrumAnalyzer"
+APPLICATION_NAME = "xrayspectrumanalyzer"
 ORGANIZATION_NAME = "McGill University"
 LOG_FILENAME = APPLICATION_NAME + '.log'
 
@@ -344,8 +344,8 @@ class MainWindow(QtGui.QMainWindow):
     def about(self):
         self.logger.info("MainWindow.about")
 
-        QtGui.QMessageBox.about(self, "About pySpectrumAnalyzer",
-                "The <b>pySpectrumAnalyzer</b> extract peak intensity from EDS spectrum.")
+        QtGui.QMessageBox.about(self, "About xrayspectrumanalyzer",
+                "The <b>xrayspectrumanalyzer</b> extract peak intensity from EDS spectrum.")
 
     def documentWasModified(self):
         self.logger.info("MainWindow.documentWasModified")

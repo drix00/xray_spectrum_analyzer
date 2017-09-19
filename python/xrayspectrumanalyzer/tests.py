@@ -29,5 +29,5 @@ if __name__ == "__main__":
     import nose
     import sys
     argv = sys.argv
-    argv.append("--cover-package=pySpectrumAnalyzer")
+    argv.append("--cover-package=xrayspectrumanalyzer")
     nose.main(argv=argv)

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-.. py:currentmodule:: pySpectrumAnalyzer.ui.console.test_SpectrumAnalyzer
+.. py:currentmodule:: xrayspectrumanalyzer.ui.console.test_SpectrumAnalyzer
 .. moduleauthor:: Hendrix Demers <hendrix.demers@mail.mcgill.ca>
 
 Tests for the module `SpectrumAnalyzer`.
@@ -66,5 +66,5 @@ if __name__ == '__main__':  #pragma: no cover
     import nose
     import sys
     argv = sys.argv
-    argv.append("--cover-package=pySpectrumAnalyzer.ui.console.SpectrumAnalyzer")
+    argv.append("--cover-package=xrayspectrumanalyzer.ui.console.SpectrumAnalyzer")
     nose.runmodule(argv=argv)

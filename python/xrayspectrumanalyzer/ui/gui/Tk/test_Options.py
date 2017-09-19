@@ -52,5 +52,5 @@ if __name__ == '__main__': #pragma: no cover
     import nose
     import sys
     argv = sys.argv
-    argv.append("--cover-package=pySpectrumAnalyzer.ui.gui.Tk.Options")
+    argv.append("--cover-package=xrayspectrumanalyzer.ui.gui.Tk.Options")
     nose.runmodule(argv=argv)

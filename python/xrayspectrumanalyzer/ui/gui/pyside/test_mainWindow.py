@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-.. py:currentmodule:: pySpectrumAnalyzer.ui.gui.pyside.test_mainWindow
+.. py:currentmodule:: xrayspectrumanalyzer.ui.gui.pyside.test_mainWindow
 .. moduleauthor:: Hendrix Demers <hendrix.demers@mail.mcgill.ca>
 
 Tests for the module `mainWindow`.
@@ -66,5 +66,5 @@ if __name__ == '__main__':  #pragma: no cover
     import nose
     import sys
     argv = sys.argv
-    argv.append("--cover-package=pySpectrumAnalyzer.ui.gui.pyside.mainWindow")
+    argv.append("--cover-package=xrayspectrumanalyzer.ui.gui.pyside.mainWindow")
     nose.runmodule(argv=argv)
