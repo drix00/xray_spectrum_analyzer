@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 """
-.. py:currentmodule:: ui.gui.Tk.tests
+.. py:currentmodule:: xrayspectrumanalyzer.ui.console.test_SpectrumAnalyzer
 .. moduleauthor:: Hendrix Demers <hendrix.demers@mail.mcgill.ca>
 
-Regression testing for the project.
+Tests for the module `SpectrumAnalyzer`.
 """
 
 ###############################################################################
@@ -23,18 +23,48 @@ Regression testing for the project.
 ###############################################################################
 
 # Standard library modules.
+import unittest
+import logging
 
 # Third party modules.
 
 # Local modules.
 
 # Project modules
+import xrayspectrumanalyzer.ui.console.SpectrumAnalyzer
 
 # Globals and constants variables.
 
-if __name__ == "__main__": #pragma: no cover
+class TestSpectrumAnalyzer(unittest.TestCase):
+    """
+    TestCase class for the module `SpectrumAnalyzer`.
+    """
+
+    def setUp(self):
+        """
+        Setup method.
+        """
+
+        unittest.TestCase.setUp(self)
+
+    def tearDown(self):
+        """
+        Teardown method.
+        """
+
+        unittest.TestCase.tearDown(self)
+
+    def testSkeleton(self):
+        """
+        First test to check if the testcase is working with the testing framework.
+        """
+
+        #self.fail("Test if the testcase is working.")
+        self.assert_(True)
+
+if __name__ == '__main__':  #pragma: no cover
     import nose
     import sys
     argv = sys.argv
-    argv.append("--cover-package=xrayspectrumanalyzer.ui.gui.Tk")
-    nose.main(argv=argv)
+    argv.append("--cover-package=xrayspectrumanalyzer.ui.console.SpectrumAnalyzer")
+    nose.runmodule(argv=argv)

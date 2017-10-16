@@ -18,20 +18,39 @@
 ###############################################################################
 
 # Standard library modules.
+import unittest
 
 # Third party modules.
 
 # Local modules.
+import xrayspectrumanalyzer.tools.XRayDataWinxray as XRayDataWinxray
 
 # Globals and constants variables.
-UI_TK = "Tk"
 
-class Options(object):
-        def __init__(self, args=None, configurationFile=None):
-                # TODO: Allow configurationFile to be either a filename string or a list of filename string.
+class TestXRayDataWinxray(unittest.TestCase):
 
-                # Set default options.
-                self._ui = UI_TK
+    def setUp(self):
+        unittest.TestCase.setUp(self)
 
-        def getUI(self):
-                return self._ui
+    def tearDown(self):
+        unittest.TestCase.tearDown(self)
+
+    def testSkeleton(self):
+        #self.fail("Test if the TestCase is working.")
+        self.assertTrue(True)
+
+    def testGetXRayEnergy_eV(self):
+        self.assertAlmostEquals(282.0, XRayDataWinxray.getXRayEnergy_eV(6, 'Ka1'))
+
+        #self.fail("Test if the TestCase is working.")
+        self.assertTrue(True)
+
+    def testGetIonizationEnergy_eV(self):
+        self.assertAlmostEquals(283.0, XRayDataWinxray.getIonizationEnergy_eV(6, 'K'))
+
+        #self.fail("Test if the TestCase is working.")
+        self.assertTrue(True)
+
+if __name__ == '__main__': #pragma: no cover
+    import nose
+    nose.runmodule()

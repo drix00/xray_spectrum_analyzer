@@ -27,7 +27,7 @@ import csv
 # Local modules.
 import pywinxraydata.XRayDataWinxray as XRayDataWinxray
 import pywinxraydata.ElementProperties as ElementProperties
-from pySpectrumAnalyzer import get_current_module_path
+from xrayspectrumanalyzer import get_current_module_path
 
 # Globals and constants variables.
 

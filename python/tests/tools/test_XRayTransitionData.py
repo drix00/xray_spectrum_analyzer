@@ -25,8 +25,8 @@ import os.path
 from nose import SkipTest
 
 # Local modules.
-from pySpectrumAnalyzer import get_current_module_path
-import pySpectrumAnalyzer.tools.XRayTransitionData as XRayTransitionData
+from xrayspectrumanalyzer import get_current_module_path
+import xrayspectrumanalyzer.tools.XRayTransitionData as XRayTransitionData
 
 # Globals and constants variables.
 

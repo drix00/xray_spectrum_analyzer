@@ -27,8 +27,8 @@ X-ray lines reference manager
 # Third party modules.
 
 # Local modules.
-import pySpectrumAnalyzer.tools.XRayTransitionData as XRayTransitionData
-import pySpectrumAnalyzer.tools.ElementProperties as ElementProperties
+import xrayspectrumanalyzer.tools.XRayTransitionData as XRayTransitionData
+import xrayspectrumanalyzer.tools.ElementProperties as ElementProperties
 
 # Project modules
 

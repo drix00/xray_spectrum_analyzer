@@ -31,7 +31,7 @@ import logging
 # Local modules.
 
 # Project modules
-import pySpectrumAnalyzer.tools.FitPolynomialFunction as FitPolynomialFunction
+import xrayspectrumanalyzer.tools.FitPolynomialFunction as FitPolynomialFunction
 
 # Globals and constants variables.
 

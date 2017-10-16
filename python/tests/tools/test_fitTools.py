@@ -26,8 +26,8 @@ import logging
 # Local modules.
 
 # Project modules
-import pySpectrumAnalyzer.tools.fitTools as fitTools
-import pySpectrumAnalyzer.tools.FitGaussianFunction as FitGaussianFunction
+import xrayspectrumanalyzer.tools.fitTools as fitTools
+import xrayspectrumanalyzer.tools.FitGaussianFunction as FitGaussianFunction
 
 # Globals and constants variables.
 

@@ -30,7 +30,7 @@ import numpy as np
 # Local modules.
 
 # Project modules
-import pySpectrumAnalyzer.tools.fitTools as fitTools
+import xrayspectrumanalyzer.tools.fitTools as fitTools
 
 # Globals and constants variables.
 

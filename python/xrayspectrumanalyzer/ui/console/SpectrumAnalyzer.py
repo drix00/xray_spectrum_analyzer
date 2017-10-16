@@ -43,14 +43,14 @@ import pySpectrumFileFormat.emmff.emsa as emsa
 import pySpectrumFileFormat.emmff.emsaFormat as emsaFormat
 import pySpectrumFileFormat.Bruker.ExportedCsvFile as ExportedCsvFile
 
-from pySpectrumAnalyzer import get_current_module_path, createPath
-from pySpectrumAnalyzer import saveFigureData
+from xrayspectrumanalyzer import get_current_module_path, createPath
+from xrayspectrumanalyzer import saveFigureData
 
-from pySpectrumAnalyzer.tools.FitPolynomialFunction import PolynomialFirstDegreeFunction
-from pySpectrumAnalyzer.tools.FitGaussianFunction import GaussianFunction
+from xrayspectrumanalyzer.tools.FitPolynomialFunction import PolynomialFirstDegreeFunction
+from xrayspectrumanalyzer.tools.FitGaussianFunction import GaussianFunction
 
 # Project modules
-import pySpectrumAnalyzer.ui.console.XrayLineReferenceManager as XrayLineReferenceManager
+import xrayspectrumanalyzer.ui.console.XrayLineReferenceManager as XrayLineReferenceManager
 
 # Globals and constants variables.
 DEBUG = False

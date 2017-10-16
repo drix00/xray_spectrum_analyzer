@@ -24,7 +24,7 @@ import logging
 # Third party modules.
 
 # Local modules.
-import pySpectrumAnalyzer.tools.ElementProperties as ElementProperties
+import xrayspectrumanalyzer.tools.ElementProperties as ElementProperties
 
 # Globals and constants variables.
 
