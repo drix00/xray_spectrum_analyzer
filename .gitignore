@@ -41,3 +41,7 @@ cmake-build*
 
 # Visual studio files
 .vs/
+
+# Python project files and folders
+dist/
+build/
